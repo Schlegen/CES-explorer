@@ -18,7 +18,8 @@ app = dash.Dash(
     meta_tags=[
         {"name": "viewport", "content": "width=device-width, initial-scale=1.0"}
     ],
-    external_stylesheets=[dbc.themes.GRID]
+    external_stylesheets=[dbc.themes.GRID,
+                          dbc.themes.SLATE]
 )
 
 app.layout = dbc.Container(
@@ -152,13 +153,13 @@ app.layout = dbc.Container(
             ],
         style={
             "width": "100%",
-            'max-width' : '100vw'
+            'maxWidth' : '100vw'
         }
         ),
     ],
     style={
         "width": "100%",
-        'max-width' : '100vw'
+        'maxWidth' : '100vw'
     }
 )
 
