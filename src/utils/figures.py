@@ -1,76 +1,89 @@
 import colorlover as cl
 import plotly.graph_objs as go
 import numpy as np
-from sklearn import metrics
+# from sklearn import metrics
 
-def serve_prediction_plot(
-    xmin, ymin, xmax, ymax
-)
+def serve_CES_plot(xmin, ymin, xmax, ymax, ces_function):
     # Colorscale
-    bright_cscale = [[0, "#ff3700"], [1, "#0b8bff"]]
+    bright_cscale = [[1, "#ff3700"], [0, "#0b8bff"]]
     cscale = [
-        [0.0000000, "#ff744c"],
-        [0.1428571, "#ff916d"],
-        [0.2857143, "#ffc0a8"],
-        [0.4285714, "#ffe7dc"],
-        [0.5714286, "#e5fcff"],
-        [0.7142857, "#c8feff"],
-        [0.8571429, "#9af8ff"],
-        [1.0000000, "#20e6ff"],
+        [0.0000000, "#20e6ff"],
+        [0.1428571, "#9af8ff"],
+        [0.2857143, "#c8feff"],
+        [0.4285714, "#e5fcff"],
+        [0.5714286, "#ffe7dc"],
+        [0.7142857, "#ffc0a8"],
+        [0.8571429, "#ff916d"],
+        [1.0000000, "#ff744c"],
     ]
+
+        # [0.0000000, "#ff744c"],
+        # [0.1428571, "#ff916d"],
+        # [0.2857143, "#ffc0a8"],
+        # [0.4285714, "#ffe7dc"],
+        # [0.5714286, "#e5fcff"],
+        # [0.7142857, "#c8feff"],
+        # [0.8571429, "#9af8ff"],
+        # [1.0000000, "#20e6ff"],
 
     # Create the plot
     # Plot the prediction contour of the SVM
+    x_grid = np.arange(xmin, xmax, 1)
+    y_grid = np.arange(ymin, ymax, 1)
+    z_grid = ces_function.eval_rectangle(x_grid, y_grid)
+    
+    #np.random.randint(10,size=(x_grid.size, y_grid.size))
+
     trace0 = go.Contour(
-        x=np.arange(xmin, xmax, 0.001),
-        y=np.arange(ymin, ymax, 0.001),
-        z=Z.reshape(xx.shape),
-        zmin=scaled_threshold - range,
-        zmax=scaled_threshold + range,
-        hoverinfo="none",
-        showscale=False,
-        contours=dict(showlines=False),
+        x=x_grid,
+        y=y_grid,
+        z=z_grid,
+        zmin=0,
+        zmax=10,
+        # hoverinfo="none",
+        # showscale=False,
+        # contours=dict(showlines=False),
         colorscale=cscale,
         opacity=0.9,
     )
 
     # Plot the threshold
-    trace1 = go.Contour(
-        x=np.arange(xx.min(), xx.max(), mesh_step),
-        y=np.arange(yy.min(), yy.max(), mesh_step),
-        z=Z.reshape(xx.shape),
-        showscale=False,
-        hoverinfo="none",
-        contours=dict(
-            showlines=False, type="constraint", operation="=", value=scaled_threshold
-        ),
-        name=f"Threshold ({scaled_threshold:.3f})",
-        line=dict(color="#708090"),
-    )
+    # trace1 = go.Contour(
+    #     x=np.arange(xx.min(), xx.max(), mesh_step),
+    #     y=np.arange(yy.min(), yy.max(), mesh_step),
+    #     z=Z.reshape(xx.shape),
+    #     showscale=False,
+    #     hoverinfo="none",
+    #     contours=dict(
+    #         showlines=False, type="constraint", operation="=", value=scaled_threshold
+    #     ),
+    #     name=f"Threshold ({scaled_threshold:.3f})",
+    #     line=dict(color="#708090"),
+    # )
 
-    # Plot Training Data
-    trace2 = go.Scatter(
-        x=X_train[:, 0],
-        y=X_train[:, 1],
-        mode="markers",
-        name=f"Training Data (accuracy={train_score:.3f})",
-        marker=dict(size=10, color=y_train, colorscale=bright_cscale),
-    )
+    # # Plot Training Data
+    # trace2 = go.Scatter(
+    #     x=X_train[:, 0],
+    #     y=X_train[:, 1],
+    #     mode="markers",
+    #     name=f"Training Data (accuracy={train_score:.3f})",
+    #     marker=dict(size=10, color=y_train, colorscale=bright_cscale),
+    # )
 
-    # Plot Test Data
-    trace3 = go.Scatter(
-        x=X_test[:, 0],
-        y=X_test[:, 1],
-        mode="markers",
-        name=f"Test Data (accuracy={test_score:.3f})",
-        marker=dict(
-            size=10, symbol="triangle-up", color=y_test, colorscale=bright_cscale
-        ),
-    )
+    # # Plot Test Data
+    # trace3 = go.Scatter(
+    #     x=X_test[:, 0],
+    #     y=X_test[:, 1],
+    #     mode="markers",
+    #     name=f"Test Data (accuracy={test_score:.3f})",
+    #     marker=dict(
+    #         size=10, symbol="triangle-up", color=y_test, colorscale=bright_cscale
+    #     ),
+    # )
 
     layout = go.Layout(
-        xaxis=dict(ticks="", showticklabels=False, showgrid=False, zeroline=False),
-        yaxis=dict(ticks="", showticklabels=False, showgrid=False, zeroline=False),
+        # xaxis=dict(ticks="", showticklabels=False, showgrid=False, zeroline=False),
+        # yaxis=dict(ticks="", showticklabels=False, showgrid=False, zeroline=False),
         hovermode="closest",
         legend=dict(x=0, y=-0.01, orientation="h"),
         margin=dict(l=0, r=0, t=0, b=0),
@@ -79,7 +92,7 @@ def serve_prediction_plot(
         font={"color": "#a5b1cd"},
     )
 
-    data = [trace0, trace1, trace2, trace3]
+    data = [trace0]#, trace1, trace2, trace3]
     figure = go.Figure(data=data, layout=layout)
 
     return figure
