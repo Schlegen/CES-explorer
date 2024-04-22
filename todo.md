@@ -1,0 +1,5 @@
+- [ ] render latex fro alpha, write somewhere the equation
+- [ ] code control problem + solve it
+- [ ] test env ?
+- [ ] draw evolution of y, dy/di1 and dy/di2
+- [ ] documentation
