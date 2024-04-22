@@ -5,6 +5,8 @@ import importlib
 import dash
 from dash import dcc
 from dash import html
+from dash import callback_context
+
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
 import utils.dash_reusable_components as drc
@@ -19,8 +21,10 @@ app = dash.Dash(
         {"name": "viewport", "content": "width=device-width, initial-scale=1.0"}
     ],
     external_stylesheets=[dbc.themes.GRID,
-                          dbc.themes.SLATE]
+                          dbc.themes.DARKLY]
 )
+app.title = 'CES-explorer'
+
 
 app.layout = dbc.Container(
     children=[
@@ -36,20 +40,33 @@ app.layout = dbc.Container(
                                     id="banner-title",
                                     children=[
                                         html.A(
-                                            "Constant Elasticity of Substitution (CES) function Explorer",
+                                            "CES-Explorer",
                                             href="https://github.com/Schlegen/CES-explorer",
                                             style={
                                                 "textDecoration": "none",
                                                 "color": "inherit",
+                                                "fontFamily": "Arial, sans-serif",
+                                                "fontSize": "28px",
+                                                "fontWeight": "bold",
                                             },
                                         )
                                     ],
+                                ),
+                                html.P(
+                                    "Explore the Constant Elasticity of Substitution function with interactive sliders",
+                                    style={
+                                        "fontSize": "16px",
+                                        "marginTop": "5px",
+                                        "color": "#777",
+                                    },
                                 ),
                             ],
                         )
                     ],
                 )
-            ]
+            ],
+            style={"backgroundColor": "rgb(50, 50, 50)", "padding": "10px"},
+            className="mb-4",
         ),
 
         dbc.Container(
@@ -65,8 +82,8 @@ app.layout = dbc.Container(
                                             id="first-card",
                                             children=[
                                                 drc.NamedSlider(
-                                                    name="alpha_x",
-                                                    id="slider-alpha-x",
+                                                    name="alpha1",
+                                                    id="slider-alpha1",
                                                     min=0,
                                                     max=1,
                                                     marks={
@@ -74,11 +91,11 @@ app.layout = dbc.Container(
                                                         for i in range(0, 11, 2)
                                                     },
                                                     step=0.1,
-                                                    value=0.2,
+                                                    value=0.5,
                                                 ),
                                                 drc.NamedSlider(
-                                                    name="alpha_y",
-                                                    id="slider-alpha-y",
+                                                    name="alpha2",
+                                                    id="slider-alpha2",
                                                     min=0,
                                                     max=1,
                                                     marks={
@@ -86,14 +103,14 @@ app.layout = dbc.Container(
                                                         for i in range(0, 11, 2)
                                                     },
                                                     step=0.1,
-                                                    value=0.2,
+                                                    value=0.5,
                                                 ),
                                                 drc.NamedSlider(
                                                     name="rho",
                                                     id="slider-rho",
-                                                    min=-2,
-                                                    max=5,
-                                                    value=0.5
+                                                    min=-10,
+                                                    max=10,
+                                                    value=2
                                                 )
                                             ],
                                         )
@@ -168,17 +185,14 @@ app.layout = dbc.Container(
 @app.callback(
     Output("central-graph", "children"),
     [
-        # Input("slider-x", "value"),
-        # Input("slider-y", "value"),
-        Input("slider-alpha-x", "value"),
-        Input("slider-alpha-y", "value"),
+        Input("slider-alpha1", "value"),
+        Input("slider-alpha2", "value"),
         Input("slider-rho", "value")
     ],
 )
-def update_central_graph(alpha_x, alpha_y, rho):
+def update_central_graph(alpha1, alpha2, rho):
 
-    ces_function = CES(1, 1, 1, rho)
-
+    ces_function = CES(alpha1, alpha2, rho)
     ces_figure = figs.serve_CES_plot(0, 0, 10, 10, ces_function)
 
     return [
@@ -191,6 +205,36 @@ def update_central_graph(alpha_x, alpha_y, rho):
             )
         )
     ]
+
+
+
+@app.callback(
+    Output("slider-alpha1", "value"),
+    [Input("slider-alpha2", "value")]
+)
+def update_slider_alpha1(alpha2):
+    # Check if the callback was triggered by slider-alpha2
+    ctx = callback_context
+    if ctx.triggered:
+        prop_id = ctx.triggered[0]["prop_id"]
+        if prop_id == "slider-alpha2.value":
+            return 1 - alpha2
+    # If not triggered by slider-alpha2, return None to prevent circular reference
+    return dash.no_update
+
+@app.callback(
+    Output("slider-alpha2", "value"),
+    [Input("slider-alpha1", "value")]
+)
+def update_slider_alpha2(alpha1):
+    # Check if the callback was triggered by slider-alpha1
+    ctx = callback_context
+    if ctx.triggered:
+        prop_id = ctx.triggered[0]["prop_id"]
+        if prop_id == "slider-alpha1.value":
+            return 1 - alpha1
+    # If not triggered by slider-alpha1, return None to prevent circular reference
+    return dash.no_update
 
 
 if __name__ == '__main__':
