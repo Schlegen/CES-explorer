@@ -133,35 +133,39 @@ app.layout = dbc.Container(
                                 ),
                                 dbc.Col(
                                     html.Span(
-                                        children=[
-                                            dcc.Graph(
-                                                id="graph-y",
-                                                figure=dict(
-                                                    layout=dict(
-                                                        plot_bgcolor="#282b38", paper_bgcolor="#282b38"
-                                                    )
-                                                )
-                                            ),
-                                            dcc.Graph(
+                                        id="graph-marginal",
+                                        children = [
+                                            html.Span(
                                                 id="graph-marginal1",
-                                                figure=dict(
-                                                    layout=dict(
-                                                        plot_bgcolor="#282b38", paper_bgcolor="#282b38"
+                                                children=[
+                                                    dcc.Graph(
+                                                        id="graph-ces-marginal1",
+                                                        figure=dict(
+                                                            layout=dict(
+                                                            plot_bgcolor="#282b38", paper_bgcolor="#282b38"
+                                                            )
+                                                        )
                                                     )
-                                                )
+                                                ]
                                             ),
-                                            dcc.Graph(
+                                            html.Span(
                                                 id="graph-marginal2",
-                                                figure=dict(
-                                                    layout=dict(
-                                                        plot_bgcolor="#282b38", paper_bgcolor="#282b38"
-                                                    )
-                                                )
-                                            ),
-                                        ]
+                                                children= [   
+                                                    dcc.Graph(
+                                                            id="graph-ces-marginal2",
+                                                            figure=dict(
+                                                                layout=dict(
+                                                                plot_bgcolor="#282b38", paper_bgcolor="#282b38"
+                                                            )
+                                                        )
+                                                    ),
+                                                ]
+                                            )
+                                        ],
                                     ),
-                                    width=4,
-                                ),
+                                width=4
+                                )
+
                             ],
                             style={"display": "flex"},  # Ensure columns are displayed side by side
                         )
@@ -179,8 +183,6 @@ app.layout = dbc.Container(
         'maxWidth' : '100vw'
     }
 )
-
-
 
 @app.callback(
     Output("central-graph", "children"),
@@ -201,6 +203,40 @@ def update_central_graph(alpha1, alpha2, rho):
             children=dcc.Loading(
                 className="graph-wrapper",
                 children=dcc.Graph(id="graph-ces", figure=ces_figure),
+                style={"display": "none"},
+            )
+        )
+    ]
+
+
+@app.callback(
+    Output("graph-marginal", "children")
+    ,
+    [
+        Input("slider-alpha1", "value"),
+        Input("slider-alpha2", "value"),
+        Input("slider-rho", "value")
+    ],
+)
+def update_marginal_graph(alpha1, alpha2, rho):
+    ces_function = CES(alpha1, alpha2, rho)
+    ces_marginal_figure1, ces_marginal_figure2 = figs.serve_CES_marginal_plot(0, 0, 10, 10, ces_function)
+
+    return [
+        html.Span(
+            id="graph-ces-marginal1",
+            children=dcc.Loading(
+                className="graph-wrapper",
+                children=dcc.Graph(id="graph-ces", figure=ces_marginal_figure1),
+                style={"display": "none"},
+            )
+        )
+    ,
+        html.Span(
+            id="graph-ces-marginal2",
+            children=dcc.Loading(
+                className="graph-wrapper",
+                children=dcc.Graph(id="graph-ces", figure=ces_marginal_figure2),
                 style={"display": "none"},
             )
         )

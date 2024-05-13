@@ -11,28 +11,45 @@ class CES:
       self.elast = 1 / (1 - rho) if rho != 0 else None
 
 
-    def eval(self, x, y):
+    def eval(self, x1, x2):
       if self.rho != 0:
         return (
-                self.alpha1 * (x ** self.rho)
-              + self.alpha2 * (y ** self.rho)
+                self.alpha1 * (x1 ** self.rho)
+              + self.alpha2 * (x2 ** self.rho)
                 ) ** (1/self.rho)
       else:
         return 1
 
-    def eval_rectangle(self, x, y):
-        xn = np.tile(x, (y.size,1)).astype(np.float32)
-        yn = np.tile(y, (x.size,1)).astype(np.float32).T
-        res = self.eval(xn, yn)
+    def eval_rectangle(self, x1, x2):
+      x1n = np.tile(x1, (x2.size,1)).astype(np.float32)
+      x2n = np.tile(x2, (x1.size,1)).astype(np.float32).T
+      res = self.eval(x1n, x2n)
 
-        if self.rho != 0:
-          return res
-        else:
-          return np.ones(xn.shape) 
+      if self.rho != 0:
+        return res
+      else:
+        return np.ones(x1n.shape) 
 
-    def eval_derivative(self):
-      ()
+    def eval_derivatives(self, x1, x2):
+      if self.rho != 0:
+        res_eval = self.eval(x1,x2)
+        denom = self.alpha1 * (x1 ** self.rho) + self.alpha2 * (x2 ** self.rho)
 
+        return self.alpha1 * (res_eval / x1) * self.alpha1 * (x1 ** self.rho) / denom, self.alpha2 * (res_eval / x2) * self.alpha1 * (x2 ** self.rho) / denom
+
+      else:
+        return 0
+
+    def eval_derivatives_rectangle(self, x1, x2):
+      x1n = np.tile(x1, (x2.size,1)).astype(np.float32)
+      x2n = np.tile(x2, (x1.size,1)).astype(np.float32).T
+
+      if self.rho != 0:
+        res_eval = self.eval(x1n, x2n)
+        denom = self.alpha1 * (x1n ** self.rho) + self.alpha2 * (x2n ** self.rho)
+        return self.alpha1 * (res_eval / x1n) * self.alpha1 * (x1n ** self.rho) / denom, self.alpha2 * (res_eval / x2n) * self.alpha1 * (x2n ** self.rho) / denom
+      else:
+        return np.ones(x1n.shape) 
 
 class ControlProblem:
   def __init__(self, p1, p2, alpha1, alpha2):
