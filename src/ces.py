@@ -10,7 +10,6 @@ class CES:
       self.rho = rho
       self.elast = 1 / (1 - rho) if rho != 0 else None
 
-
     def eval(self, x1, x2):
       if self.rho != 0:
         return (
@@ -49,7 +48,15 @@ class CES:
         denom = self.alpha1 * (x1n ** self.rho) + self.alpha2 * (x2n ** self.rho)
         return self.alpha1 * (res_eval / x1n) * self.alpha1 * (x1n ** self.rho) / denom, self.alpha2 * (res_eval / x2n) * self.alpha1 * (x2n ** self.rho) / denom
       else:
-        return np.ones(x1n.shape) 
+        return np.ones(x1n.shape), np.ones(x2n.shape) 
+
+    def eval_cheaper(self, x1, x2, ratio_prices):
+      derivatives = self.eval_derivatives_rectangle(x1,x2)
+      return derivatives[0] / ratio_prices > derivatives[1]
+
+    def eval_cheaper_rectangle(self, x1, x2, ratio_prices):
+      derivatives = self.eval_derivatives_rectangle(x1,x2)
+      return derivatives[0] / ratio_prices > derivatives[1]
 
 class ControlProblem:
   def __init__(self, p1, p2, alpha1, alpha2):

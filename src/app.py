@@ -93,24 +93,31 @@ app.layout = dbc.Container(
                                                     step=0.1,
                                                     value=0.5,
                                                 ),
-                                                drc.NamedSlider(
-                                                    name="alpha2",
-                                                    id="slider-alpha2",
-                                                    min=0,
-                                                    max=1,
-                                                    marks={
-                                                        i / 10: str(i / 10)
-                                                        for i in range(0, 11, 2)
-                                                    },
-                                                    step=0.1,
-                                                    value=0.5,
-                                                ),
+                                                # drc.NamedSlider(
+                                                #     name="alpha2",
+                                                #     id="slider-alpha2",
+                                                #     min=0,
+                                                #     max=1,
+                                                #     marks={
+                                                #         i / 10: str(i / 10)
+                                                #         for i in range(0, 11, 2)
+                                                #     },
+                                                #     step=0.1,
+                                                #     value=0.5,
+                                                # ),
                                                 drc.NamedSlider(
                                                     name="rho",
                                                     id="slider-rho",
                                                     min=-10,
                                                     max=10,
                                                     value=2
+                                                ),
+                                                drc.NamedSlider(
+                                                    name="ratio-prices",
+                                                    id="slider-ratio-prices",
+                                                    min=1,
+                                                    max=5,
+                                                    value=1
                                                 )
                                             ],
                                         )
@@ -136,31 +143,33 @@ app.layout = dbc.Container(
                                         id="graph-marginal",
                                         children = [
                                             html.Span(
-                                                id="graph-marginal1",
+                                                id="graph-cheaper",
                                                 children=[
                                                     dcc.Graph(
-                                                        id="graph-ces-marginal1",
+                                                        id="graph-cheaper1",
                                                         figure=dict(
                                                             layout=dict(
-                                                            plot_bgcolor="#282b38", paper_bgcolor="#282b38"
+                                                            plot_bgcolor="#282b38",
+                                                            paper_bgcolor="#282b38"
                                                             )
                                                         )
                                                     )
                                                 ]
-                                            ),
-                                            html.Span(
-                                                id="graph-marginal2",
-                                                children= [   
-                                                    dcc.Graph(
-                                                            id="graph-ces-marginal2",
-                                                            figure=dict(
-                                                                layout=dict(
-                                                                plot_bgcolor="#282b38", paper_bgcolor="#282b38"
-                                                            )
-                                                        )
-                                                    ),
-                                                ]
                                             )
+                                            # ),
+                                            # html.Span(
+                                            #     id="graph-marginal2",
+                                            #     children= [   
+                                            #         dcc.Graph(
+                                            #                 id="graph-ces-marginal2",
+                                            #                 figure=dict(
+                                            #                     layout=dict(
+                                            #                     plot_bgcolor="#282b38", paper_bgcolor="#282b38"
+                                            #                 )
+                                            #             )
+                                            #         ),
+                                            #     ]
+                                            # )
                                         ],
                                     ),
                                 width=4
@@ -188,14 +197,15 @@ app.layout = dbc.Container(
     Output("central-graph", "children"),
     [
         Input("slider-alpha1", "value"),
-        Input("slider-alpha2", "value"),
+        # Input("slider-alpha2", "value"),
         Input("slider-rho", "value")
     ],
 )
-def update_central_graph(alpha1, alpha2, rho):
-
+def update_central_graph(alpha1, rho):
+    alpha2 = 1-alpha1
     ces_function = CES(alpha1, alpha2, rho)
-    ces_figure = figs.serve_CES_plot(0, 0, 10, 10, ces_function)
+    ces_figure = figs.serve_CES_plot_3d(0, 0, 10, 10, ces_function)
+    # ces_figure = figs.serve_CES_plot(0, 0, 10, 10, ces_function)
 
     return [
         html.Span(
@@ -214,63 +224,88 @@ def update_central_graph(alpha1, alpha2, rho):
     ,
     [
         Input("slider-alpha1", "value"),
-        Input("slider-alpha2", "value"),
-        Input("slider-rho", "value")
+        # Input("slider-alpha2", "value"),
+        Input("slider-rho", "value"),
+        Input("slider-ratio-prices", "value")
     ],
 )
-def update_marginal_graph(alpha1, alpha2, rho):
+def update_marginal_graph(alpha1, rho, ratio_prices):
+    alpha2 = 1-alpha1
     ces_function = CES(alpha1, alpha2, rho)
-    ces_marginal_figure1, ces_marginal_figure2 = figs.serve_CES_marginal_plot(0, 0, 10, 10, ces_function)
+    ces_cheaper = figs.serve_CES_cheaper_plot(0, 0, 10, 10, ces_function, ratio_prices)
 
     return [
         html.Span(
             id="graph-ces-marginal1",
             children=dcc.Loading(
                 className="graph-wrapper",
-                children=dcc.Graph(id="graph-ces", figure=ces_marginal_figure1),
-                style={"display": "none"},
-            )
-        )
-    ,
-        html.Span(
-            id="graph-ces-marginal2",
-            children=dcc.Loading(
-                className="graph-wrapper",
-                children=dcc.Graph(id="graph-ces", figure=ces_marginal_figure2),
+                children=dcc.Graph(id="graph-ces", figure=ces_cheaper),
                 style={"display": "none"},
             )
         )
     ]
 
+# @app.callback(
+#     Output("graph-marginal", "children")
+#     ,
+#     [
+#         Input("slider-alpha1", "value"),
+#         Input("slider-alpha2", "value"),
+#         Input("slider-rho", "value"),
+#         Input("slider-ratio-prices", "value")
+#     ],
+# )
+# def update_marginal_graph(alpha1, alpha2, rho, ratio_prices):
+#     ces_function = CES(alpha1, alpha2, rho)
+#     ces_marginal_figure1, ces_marginal_figure2 = figs.serve_CES_cheaper_plot(0, 0, 10, 10, ces_function, ratio_prices)
 
+#     return [
+#         html.Span(
+#             id="graph-ces-marginal1",
+#             children=dcc.Loading(
+#                 className="graph-wrapper",
+#                 children=dcc.Graph(id="graph-ces", figure=ces_marginal_figure1),
+#                 style={"display": "none"},
+#             )
+#         )
+#     ,
+#         html.Span(
+#             id="graph-ces-marginal2",
+#             children=dcc.Loading(
+#                 className="graph-wrapper",
+#                 children=dcc.Graph(id="graph-ces", figure=ces_marginal_figure2),
+#                 style={"display": "none"},
+#             )
+#         )
+#     ]
 
-@app.callback(
-    Output("slider-alpha1", "value"),
-    [Input("slider-alpha2", "value")]
-)
-def update_slider_alpha1(alpha2):
-    # Check if the callback was triggered by slider-alpha2
-    ctx = callback_context
-    if ctx.triggered:
-        prop_id = ctx.triggered[0]["prop_id"]
-        if prop_id == "slider-alpha2.value":
-            return 1 - alpha2
-    # If not triggered by slider-alpha2, return None to prevent circular reference
-    return dash.no_update
+# @app.callback(
+#     Output("slider-alpha1", "value"),
+#     [Input("slider-alpha2", "value")]
+# )
+# def update_slider_alpha1(alpha2):
+#     # Check if the callback was triggered by slider-alpha2
+#     ctx = callback_context
+#     if ctx.triggered:
+#         prop_id = ctx.triggered[0]["prop_id"]
+#         if prop_id == "slider-alpha2.value":
+#             return 1 - alpha2
+#     # If not triggered by slider-alpha2, return None to prevent circular reference
+#     return dash.no_update
 
-@app.callback(
-    Output("slider-alpha2", "value"),
-    [Input("slider-alpha1", "value")]
-)
-def update_slider_alpha2(alpha1):
-    # Check if the callback was triggered by slider-alpha1
-    ctx = callback_context
-    if ctx.triggered:
-        prop_id = ctx.triggered[0]["prop_id"]
-        if prop_id == "slider-alpha1.value":
-            return 1 - alpha1
-    # If not triggered by slider-alpha1, return None to prevent circular reference
-    return dash.no_update
+# @app.callback(
+#     Output("slider-alpha2", "value"),
+#     [Input("slider-alpha1", "value")]
+# )
+# def update_slider_alpha2(alpha1):
+#     # Check if the callback was triggered by slider-alpha1
+#     ctx = callback_context
+#     if ctx.triggered:
+#         prop_id = ctx.triggered[0]["prop_id"]
+#         if prop_id == "slider-alpha1.value":
+#             return 1 - alpha1
+#     # If not triggered by slider-alpha1, return None to prevent circular reference
+#     return dash.no_update
 
 
 if __name__ == '__main__':

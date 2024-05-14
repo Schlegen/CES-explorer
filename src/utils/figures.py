@@ -1,5 +1,6 @@
 import colorlover as cl
 import plotly.graph_objs as go
+# import plotly.graph_objects as go
 import numpy as np
 # from sklearn import metrics
 
@@ -45,6 +46,65 @@ def serve_CES_plot(xmin, ymin, xmax, ymax, ces_function):
     figure = go.Figure(data=data, layout=layout)
 
     return figure
+
+
+
+
+
+def serve_CES_plot_3d(xmin, ymin, xmax, ymax, ces_function):
+    # Colorscale
+    bright_cscale = [[1, "#ff3700"], [0, "#0b8bff"]]
+    cscale = [
+        [0.0000000, "#20e6ff"],
+        [0.1428571, "#9af8ff"],
+        [0.2857143, "#c8feff"],
+        [0.4285714, "#e5fcff"],
+        [0.5714286, "#ffe7dc"],
+        [0.7142857, "#ffc0a8"],
+        [0.8571429, "#ff916d"],
+        [1.0000000, "#ff744c"],
+    ]
+
+    # Create the plot
+    x_grid = np.arange(xmin, xmax, 0.1)
+    y_grid = np.arange(ymin, ymax, 0.1)
+    z_grid = ces_function.eval_rectangle(x_grid, y_grid)
+
+    layout = go.Layout(
+        hovermode="closest",
+        # legend=dict(x=0, y=-0.01, orientation="h"),
+        margin=dict(l=0, r=0, t=0, b=0),
+        plot_bgcolor="#282b38",
+        paper_bgcolor="#282b38",
+        font={"color": "#a5b1cd"}
+    )
+
+
+    fig = go.Figure(
+        go.Surface(
+            contours = {
+                # "x": {"show": True, "start": 1.5, "end": 2, "size": 0.04, "color":"white"},
+                "z": {"show": True, "start": 0.1, "end": 10, "size": 0.5}
+            },
+            x=x_grid,
+            y=y_grid,
+            z=z_grid,
+            colorscale=cscale
+        ),
+        layout=layout
+    )
+    fig.update_layout(
+        scene = {
+            "xaxis": {"nticks": 20, "title":"x1"},
+            "yaxis": {"nticks": 20, "title":"x2"},
+            "zaxis": {"nticks": 15, "title":"y"},
+            'camera_eye': {"x": -1.2, "y": -1.2, "z": 1.6},
+            "aspectratio": {"x": 1, "y": 1, "z": 0.7},
+        },
+    )
+
+
+    return fig
 
 
 def serve_CES_marginal_plot(xmin, ymin, xmax, ymax, ces_function):
@@ -105,11 +165,64 @@ def serve_CES_marginal_plot(xmin, ymin, xmax, ymax, ces_function):
     return figure1, figure2
 
 
+def serve_CES_cheaper_plot(xmin, ymin, xmax, ymax, ces_function, ratio_prices):
+    # Colorscale
+    # bright_cscale = [[1, "#ff3700"], [0, "#0b8bff"]]
+
+    cscale = [
+        [0.0000000, "#20e6ff"],
+        [0.1428571, "#9af8ff"],
+        [0.2857143, "#c8feff"],
+        [0.4285714, "#e5fcff"],
+        [0.5714286, "#ffe7dc"],
+        [0.7142857, "#ffc0a8"],
+        [0.8571429, "#ff916d"],
+        [1.0000000, "#ff744c"],
+    ]
+    # Create the plot
+    # Plot the prediction contour of the SVM
+    x_grid = np.arange(xmin, xmax, 0.1)
+    y_grid = np.arange(ymin, ymax, 0.1)
+    z_grid = ces_function.eval_cheaper_rectangle(x_grid, y_grid, ratio_prices)
+    
+    trace = go.Contour(
+        x=x_grid,
+        y=y_grid,
+        z=z_grid.astype(int),
+        # zmin=0,
+        # zmax=10,
+        colorscale=cscale,
+        opacity=0.9,
+    )
+
+    layout = go.Layout(
+        # xaxis=dict(ticks="", showticklabels=False, showgrid=False, zeroline=False),
+        # yaxis=dict(ticks="", showticklabels=False, showgrid=False, zeroline=False),
+        hovermode="closest",
+        legend=dict(x=0, y=-0.01, orientation="h"),
+        margin=dict(l=0, r=0, t=0, b=0),
+        plot_bgcolor="#282b38",
+        paper_bgcolor="#282b38",
+        font={"color": "#a5b1cd"},
+    )
+
+    data = [trace]
+    figure = go.Figure(data=data, layout=layout)
+
+    return figure
 
 
-def serve_prediction_plot(
-    model, X_train, X_test, y_train, y_test, Z, xx, yy, mesh_step, threshold
-):
+
+
+
+
+
+
+
+
+
+
+def serve_prediction_plot(model, X_train, X_test, y_train, y_test, Z, xx, yy, mesh_step, threshold):
     # Get train and test score from model
     y_pred_train = (model.decision_function(X_train) > threshold).astype(int)
     y_pred_test = (model.decision_function(X_test) > threshold).astype(int)
