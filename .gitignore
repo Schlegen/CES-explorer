@@ -1,5 +1,6 @@
 src/venv/*
-src/__pycache__/
-src/utils/__pycache__/
+
+
 *.pyc
-src/nodes_modules/
+**/node_modules
+**/__pycache__
