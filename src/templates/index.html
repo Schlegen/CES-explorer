@@ -34,16 +34,33 @@
       
         <section>
           <h2>LET'S PLOT THIS</h2>
-          <div id="plotly-div">{{ url_ces_graph | safe }}</div>
-          <!-- <iframe width="1000" height="550" frameborder="0" seamless="seamless" scrolling="no" \
-          src='ces_plot'></iframe> -->
-        </section>
-        
+
+          <div class="container">
+            <div class="slider-container">
+              <div class="slider">
+                  <label for="alpha-slider"> $\alpha_1$: </label>
+                  <span id="alpha-value">1</span>
+                  <input type="range" id="alpha-slider" name="alpha-slider" min="0" max="1" value="0.5" step="0.01">
+                  
+              </div>
+              <div class="slider">
+                  <label for="rho-slider"> $\rho$: </label> 
+                  <span id="rho-value">10</span>
+                  <input type="range" id="rho-slider" name="rho-slider" min="-10" max="10" value="2" step="0.1">
+
+              </div>
+          </div>
+
+          <div class="plot-container">
+            <div id="plotly-div">{{ url_ces_graph | safe }}</div>
+          </div>
+        </div>
 
     </div>
     </div>
     <script src="{{ url_for('static', filename='node_modules/reveal.js/dist/reveal.js') }}"></script>
     <script src="{{ url_for('static', filename='node_modules/reveal.js/plugin/math/math.js') }}"></script> 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         Reveal.initialize({
         katex: {
@@ -58,6 +75,35 @@
         },
         plugins: [ RevealMath.KaTeX ]
         });
+
+        function updatePlotlyGraph(alpha, rho) {
+            $.ajax({
+                type: 'POST',
+                url: '/update-plot',
+                data: {
+                    'alpha': alpha,
+                    'rho': rho
+                },
+                success: function(response) {
+                    $('#plotly-div').html(response.url_ces_graph);
+                }
+            });
+        }
+
+        // Update Plotly graph based on slider values
+        document.getElementById('alpha-slider').addEventListener('input', function() {
+            var xValue = this.value;
+            document.getElementById('alpha-value').innerText = xValue;
+            updatePlotlyGraph(xValue, document.getElementById('rho-slider').value);
+        });
+        
+        document.getElementById('rho-slider').addEventListener('input', function() {
+            var yValue = this.value;
+            document.getElementById('rho-value').innerText = yValue;
+            updatePlotlyGraph(document.getElementById('alpha-slider').value, yValue);
+        });
+
+
     </script>
   </body>
 </html>

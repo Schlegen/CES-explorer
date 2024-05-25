@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify, request
 import jinja2# import Environment, FileSystemLoader
 
 
@@ -25,6 +25,20 @@ def home():
     return render_template('index.html',
         url_ces_graph=ces_graph_url
     )
+
+
+@app.route('/update-plot', methods=['POST'])
+def update_plot():
+    alpha1 = float(request.form['alpha'])
+    rho = float(request.form['rho'])
+
+    # Create an updated Plotly graph
+    ces_graph_url = build_central_graph(alpha1, rho)
+
+    print('coucou')
+    # Convert the Plotly graph to HTML
+    # plot_html = pio.to_html(fig, full_html=False)
+    return jsonify({'url_ces_graph': ces_graph_url})
 
 
 def build_central_graph(alpha1, rho):

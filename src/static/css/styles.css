@@ -4,3 +4,40 @@
     text-align: center;
     padding: 50px;
 }
+
+/* Plots sliders */
+
+.container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+/* .col{
+    flex: 1;
+} */
+
+.twocolumn {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+    text-align: left;
+ }
+
+.slider-container {
+    width: 20%;
+}
+.plot-container {
+    width: 75%;
+}
+
+/* #plotly-div {
+    max-width: 60%;
+} */
+
+
+.slider {
+    margin: 10px 0;
+}
+

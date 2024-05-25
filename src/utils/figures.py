@@ -74,8 +74,8 @@ def serve_CES_plot_3d(xmin, ymin, xmax, ymax, ces_function):
     ]
 
     # Create the plot
-    x_grid = np.arange(xmin, xmax, 0.1)
-    y_grid = np.arange(ymin, ymax, 0.1)
+    x_grid = np.arange(xmin, xmax, 0.2)
+    y_grid = np.arange(ymin, ymax, 0.2)
     z_grid = ces_function.eval_rectangle(x_grid, y_grid)
 
     layout = go.Layout(
