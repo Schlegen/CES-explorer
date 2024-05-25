@@ -1,8 +1,15 @@
+import os
+
 import colorlover as cl
 import plotly.graph_objs as go
+import plotly.io as pio
+import plotly
 # import plotly.graph_objects as go
 import numpy as np
-# from sklearn import metrics
+
+
+
+from config import *
 
 def serve_CES_plot(xmin, ymin, xmax, ymax, ces_function):
     # Colorscale
@@ -46,6 +53,7 @@ def serve_CES_plot(xmin, ymin, xmax, ymax, ces_function):
     figure = go.Figure(data=data, layout=layout)
 
     return figure
+
 
 
 
@@ -103,9 +111,7 @@ def serve_CES_plot_3d(xmin, ymin, xmax, ymax, ces_function):
         },
     )
 
-
-    return fig
-
+    return pio.to_html(fig, full_html=False)
 
 def serve_CES_marginal_plot(xmin, ymin, xmax, ymax, ces_function):
     # Colorscale
