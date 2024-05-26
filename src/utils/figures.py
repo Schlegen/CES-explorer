@@ -11,6 +11,91 @@ import numpy as np
 
 from config import *
 
+
+
+def serve_CES_plot_3d(xmin, ymin, xmax, ymax, ces_function, control_problem=None):
+    # Colorscale
+    bright_cscale = [[1, "#ff3700"], [0, "#0b8bff"]]
+    cscale = [
+        [0.0000000, "#20e6ff"],
+        [0.1428571, "#9af8ff"],
+        [0.2857143, "#c8feff"],
+        [0.4285714, "#e5fcff"],
+        [0.5714286, "#ffe7dc"],
+        [0.7142857, "#ffc0a8"],
+        [0.8571429, "#ff916d"],
+        [1.0000000, "#ff744c"],
+    ]
+
+    # Create the plot
+    x_grid = np.arange(xmin, xmax, 0.2)
+    y_grid = np.arange(ymin, ymax, 0.2)
+    z_grid = ces_function.eval_rectangle(x_grid, y_grid)
+
+    layout = go.Layout(
+        hovermode="closest",
+        # legend=dict(x=0, y=-0.01, orientation="h"),
+        margin=dict(l=0, r=0, t=0, b=0),
+        plot_bgcolor="#282b38",
+        paper_bgcolor="#282b38",
+        font={"color": "#a5b1cd"}
+    )
+
+    if control_problem:
+        # print('--- hello ---')
+        fig = go.Figure(
+            [go.Surface(
+                contours = {
+                    "z": {"show": True, "start": 0.1, "end": 10, "size": 0.5}
+                },
+                x=x_grid,
+                y=y_grid,
+                z=z_grid,
+                colorscale=cscale
+            ),
+            go.Scatter3d(
+                x=control_problem.x1,
+                y=control_problem.x2,
+                z=control_problem.y,
+                mode='markers',
+                marker=dict(
+                    size=12,
+                    color=control_problem.t,                # set color to an array/list of desired values
+                    colorscale='Viridis',   # choose a colorscale
+                    opacity=0.8
+                )
+            )],
+            layout=layout
+        )
+        # print(fig)
+
+    else :
+        fig = go.Figure(
+            go.Surface(
+                contours = {
+                    "z": {"show": True, "start": 0.1, "end": 10, "size": 0.5}
+                },
+                x=x_grid,
+                y=y_grid,
+                z=z_grid,
+                colorscale=cscale
+            ),
+            layout=layout
+        )
+    fig.update_layout(
+        scene = {
+            "xaxis": {"nticks": 20, "title":"x1"},
+            "yaxis": {"nticks": 20, "title":"x2"},
+            "zaxis": {"nticks": 15, "title":"y"},
+            'camera_eye': {"x": -1.2, "y": -1.2, "z": 1.6},
+            "aspectratio": {"x": 1, "y": 1, "z": 0.7},
+        },
+    )
+
+    return pio.to_html(fig, full_html=False)
+
+
+
 def serve_CES_plot(xmin, ymin, xmax, ymax, ces_function):
     # Colorscale
     bright_cscale = [[1, "#ff3700"], [0, "#0b8bff"]]
@@ -54,64 +139,6 @@ def serve_CES_plot(xmin, ymin, xmax, ymax, ces_function):
 
     return figure
 
-
-
-
-
-
-def serve_CES_plot_3d(xmin, ymin, xmax, ymax, ces_function):
-    # Colorscale
-    bright_cscale = [[1, "#ff3700"], [0, "#0b8bff"]]
-    cscale = [
-        [0.0000000, "#20e6ff"],
-        [0.1428571, "#9af8ff"],
-        [0.2857143, "#c8feff"],
-        [0.4285714, "#e5fcff"],
-        [0.5714286, "#ffe7dc"],
-        [0.7142857, "#ffc0a8"],
-        [0.8571429, "#ff916d"],
-        [1.0000000, "#ff744c"],
-    ]
-
-    # Create the plot
-    x_grid = np.arange(xmin, xmax, 0.2)
-    y_grid = np.arange(ymin, ymax, 0.2)
-    z_grid = ces_function.eval_rectangle(x_grid, y_grid)
-
-    layout = go.Layout(
-        hovermode="closest",
-        # legend=dict(x=0, y=-0.01, orientation="h"),
-        margin=dict(l=0, r=0, t=0, b=0),
-        plot_bgcolor="#282b38",
-        paper_bgcolor="#282b38",
-        font={"color": "#a5b1cd"}
-    )
-
-
-    fig = go.Figure(
-        go.Surface(
-            contours = {
-                # "x": {"show": True, "start": 1.5, "end": 2, "size": 0.04, "color":"white"},
-                "z": {"show": True, "start": 0.1, "end": 10, "size": 0.5}
-            },
-            x=x_grid,
-            y=y_grid,
-            z=z_grid,
-            colorscale=cscale
-        ),
-        layout=layout
-    )
-    fig.update_layout(
-        scene = {
-            "xaxis": {"nticks": 20, "title":"x1"},
-            "yaxis": {"nticks": 20, "title":"x2"},
-            "zaxis": {"nticks": 15, "title":"y"},
-            'camera_eye': {"x": -1.2, "y": -1.2, "z": 1.6},
-            "aspectratio": {"x": 1, "y": 1, "z": 0.7},
-        },
-    )
-
-    return pio.to_html(fig, full_html=False)
 
 def serve_CES_marginal_plot(xmin, ymin, xmax, ymax, ces_function):
     # Colorscale
@@ -169,7 +196,6 @@ def serve_CES_marginal_plot(xmin, ymin, xmax, ymax, ces_function):
     figure2 = go.Figure(data=data2, layout=layout)
 
     return figure1, figure2
-
 
 def serve_CES_cheaper_plot(xmin, ymin, xmax, ymax, ces_function, ratio_prices):
     # Colorscale

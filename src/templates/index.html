@@ -2,6 +2,9 @@
 <html>
     <html lang="en">
   <head>
+    <meta charset="utf-8">
+    <title>CES explorer</title>
+    <link rel="shortcut icon" href="#">
     <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/reveal.js/dist/reveal.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/reveal.js/dist/theme/black.css') }}" id="theme">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
@@ -24,7 +27,7 @@
             
             <!-- <p class="fragment">  -->
                 <ul>
-                <li>$\alpha_1$ and $\alpha_2$ are the shares of $x_1$ and $x_2$</li>
+                <li>$\alpha_1$ and $\alpha_2$ are the shares of $x_1$ and $x_2$ ($x_1 + x_2 = 1$)</li>
                 <li>$\rho$ is the substitution parameter</li>
                 <li>$\sigma = \frac{1}{1-\rho}$ is the elasticity substitution</li>
                 </ul>
@@ -52,11 +55,60 @@
           </div>
 
           <div class="plot-container">
-            <div id="plotly-div">{{ url_ces_graph | safe }}</div>
+            <div id="ces-div">{{ url_ces_graph | safe }}</div>
           </div>
-        </div>
+          </div>
+        </section>
 
-    </div>
+        <section>
+          <h2> WHAT DO WE CONSERVE ?</h2>
+
+          <br>
+          <div class="container">
+            <div class="col">
+              <h4>MONEY</h4>  
+              $$\hat{y} = (\alpha_1 {\hat{x_1}}^{\rho} + \alpha_2 {\hat{x_2}}^{\rho}) ^{\frac{1}{\rho}}$$
+              $$y = x_1 + x_2$$
+          </div>
+
+          <div class="col">
+            <h4>QUANTITIES</h4>
+            $$\hat{y} = \hat{x}_1 + \hat{x}_2$$
+            $$y = (\alpha_1 {x_1}^{\rho} + \alpha_2 {x_2}^{\rho}) ^{\frac{1}{\rho}}$$
+          </div>
+          </div>
+        </section>
+
+        <section>
+          <h2>Adding a dynamics</h2>
+
+          <div class="container">
+            <div class="slider-container">
+              <div class="button-container">
+                <button id="start-button">Start</button>
+              </div>
+
+              <div class="slider">
+                  <label for="alpha-slider-2"> $\alpha_1$: </label>
+                  <span id="alpha-value-2">1</span>
+                  <input type="range" id="alpha-slider-2" name="alpha-slider" min="0" max="1" value="0.5" step="0.01">
+                  
+              </div>
+              <div class="slider">
+                  <label for="rho-slider-2"> $\rho$: </label> 
+                  <span id="rho-value-2">10</span>
+                  <input type="range" id="rho-slider-2" name="rho-slider" min="-10" max="10" value="2" step="0.1">
+              </div>
+
+          </div>
+
+          <div class="plot-container">
+            <div id="cesdyn-div">{{ url_ces_graph_dynamics | safe }}</div>
+          </div>
+          </div>
+        </section>
+        
+      </div>
     </div>
     <script src="{{ url_for('static', filename='node_modules/reveal.js/dist/reveal.js') }}"></script>
     <script src="{{ url_for('static', filename='node_modules/reveal.js/plugin/math/math.js') }}"></script> 
@@ -76,16 +128,18 @@
         plugins: [ RevealMath.KaTeX ]
         });
 
-        function updatePlotlyGraph(alpha, rho) {
+      // dynamic plot
+
+        function updateCesGraph(alpha, rho) {
             $.ajax({
                 type: 'POST',
-                url: '/update-plot',
+                url: '/update-plot-ces',
                 data: {
                     'alpha': alpha,
                     'rho': rho
                 },
                 success: function(response) {
-                    $('#plotly-div').html(response.url_ces_graph);
+                    $('#cesdyn-div').html(response.url_ces_graph);
                 }
             });
         }
@@ -94,13 +148,53 @@
         document.getElementById('alpha-slider').addEventListener('input', function() {
             var xValue = this.value;
             document.getElementById('alpha-value').innerText = xValue;
-            updatePlotlyGraph(xValue, document.getElementById('rho-slider').value);
+            updateCesGraph(xValue, document.getElementById('rho-slider').value);
         });
         
         document.getElementById('rho-slider').addEventListener('input', function() {
             var yValue = this.value;
             document.getElementById('rho-value').innerText = yValue;
-            updatePlotlyGraph(document.getElementById('alpha-slider').value, yValue);
+            updateCesGraph(document.getElementById('alpha-slider').value, yValue);
+        });
+
+
+
+      // dynamic plot
+
+      function updateCesDynGraph(alpha, rho) {
+            $.ajax({
+                type: 'POST',
+                url: '/update-plot-cesdyn',
+                data: {
+                    'alpha': alpha,
+                    'rho': rho
+                },
+                success: function(response) {
+                    $('#cesdyn-div').html(response.url_ces_graph_dynamics);
+                }
+            });
+        }
+
+        document.getElementById('start-button').addEventListener('click', function() {
+            // Enable sliders
+            document.getElementById('alpha-slider-2').disabled = false;
+            document.getElementById('rho-slider-2').disabled = false;
+
+            // Initial update with default values
+            updateCesDynGraph(document.getElementById('alpha-slider-2').value, document.getElementById('alpha-slider-2').value);
+        });
+
+        // Update Plotly graph based on slider values
+        document.getElementById('alpha-slider-2').addEventListener('input', function() {
+            var xValue = this.value;
+            document.getElementById('alpha-value-2').innerText = xValue;
+            updateCesDynGraph(xValue, document.getElementById('rho-slider-2').value);
+        });
+        
+        document.getElementById('rho-slider-2').addEventListener('input', function() {
+            var yValue = this.value;
+            document.getElementById('rho-value-2').innerText = yValue;
+            updateCesDynGraph(document.getElementById('alpha-slider-2').value, yValue);
         });
 
 
