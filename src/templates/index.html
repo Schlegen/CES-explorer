@@ -1,74 +1,174 @@
 <!doctype html>
 <html>
-    <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>CES explorer</title>
-    <link rel="shortcut icon" href="#">
-    <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/reveal.js/dist/reveal.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/reveal.js/dist/theme/black.css') }}" id="theme">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-  </head>
-  <body>
-    <div class="reveal">
-      <div class="slides">
-        <section>
-            <h2> CES explorer </h2>
-            Explore the Constant Elasticity of Substitution function
-            Nicolas Schlegel
-        </section>
+<html lang="en">
 
-        <section> 
-            <h2> DEFINITION </h2>
+<head>
+  <meta charset="utf-8">
+  <title>CES explorer</title>
+  <link rel="shortcut icon" href="#">
+  <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/reveal.js/dist/reveal.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/reveal.js/dist/theme/black.css') }}"
+    id="theme">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
 
-            <!-- <p class="fragment fade-out"> $y$ is a CES of $~ x_1$ and $x_2$ if: </p> -->
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section>
+        <h2> CES explorer </h2>
+        Explore the Constant Elasticity of Substitution function
+        Nicolas Schlegel
+      </section>
 
-            $$y = (\alpha_1 {x_1}^{\rho} + \alpha_2 {x_2}^{\rho}) ^{\frac{1}{\rho}}$$           
-            
-            <!-- <p class="fragment">  -->
-                <ul>
-                <li>$\alpha_1$ and $\alpha_2$ are the shares of $x_1$ and $x_2$ ($x_1 + x_2 = 1$)</li>
-                <li>$\rho$ is the substitution parameter</li>
-                <li>$\sigma = \frac{1}{1-\rho}$ is the elasticity substitution</li>
-                </ul>
-            <!-- </p> -->
-            
-        </section>
-      
-        <section>
-          <h2>LET'S PLOT THIS</h2>
+      <!-- GENERAL DEFINITION -->
+      <section>
+        <h2> GENERAL DEFINITION </h2>
 
-          <div class="container">
-            <div class="slider-container">
-              <div class="slider">
-                  <label for="alpha-slider"> $\alpha_1$: </label>
-                  <span id="alpha-value">1</span>
-                  <input type="range" id="alpha-slider" name="alpha-slider" min="0" max="1" value="0.5" step="0.01">
-                  
-              </div>
-              <div class="slider">
-                  <label for="rho-slider"> $\rho$: </label> 
-                  <span id="rho-value">10</span>
-                  <input type="range" id="rho-slider" name="rho-slider" min="-10" max="10" value="2" step="0.1">
+        <!-- <p class="fragment fade-out"> $y$ is a CES of $~ x_1$ and $x_2$ if: </p> -->
 
-              </div>
+        $$y = (\alpha_1 {x_1}^{\rho} + \alpha_2 {x_2}^{\rho}) ^{\frac{1}{\rho}}$$
+
+        <!-- <p class="fragment">  -->
+        <ul>
+          <li>$\alpha_1$ and $\alpha_2$ are the shares of $x_1$ and $x_2$ ($x_1 + x_2 = 1$)</li>
+          <li>$\rho$ is the substitution parameter</li>
+          <li>$\sigma = \frac{1}{1-\rho}$ is the elasticity substitution</li>
+        </ul>
+        <!-- </p> -->
+
+      </section>
+
+      <!-- LET'S PLOT THIS -->
+      <section>
+        <h2>LET'S PLOT THIS</h2>
+
+        <div class="container">
+          <div class="slider-container">
+            <div class="slider">
+              <label for="alpha-slider"> $\alpha_1$: </label>
+              <span id="alpha-value">1</span>
+              <input type="range" id="alpha-slider" name="alpha-slider" min="0" max="1" value="0.5" step="0.01">
+
+            </div>
+            <div class="slider">
+              <label for="rho-slider"> $\rho$: </label>
+              <span id="rho-value">10</span>
+              <input type="range" id="rho-slider" name="rho-slider" min="-10" max="10" value="2" step="0.1">
+
+            </div>
           </div>
 
           <div class="plot-container">
             <div id="ces-div">{{ url_ces_graph | safe }}</div>
           </div>
+        </div>
+      </section>
+
+      <!-- CES WITH DYNAMICS -->
+      <section> 
+        <h2> CES WITH DYNAMICS </h2>
+
+        <!-- <p class="fragment fade-out"> $y$ is a CES of $~ x_1$ and $x_2$ if: </p> -->
+
+        $$\frac{y(t)}{y(0)} = \left(\alpha_1 \left({\frac{x_1(t)}{x_1(0)}}\right)^{\rho} + \alpha_2
+        \left({\frac{x_2(t)}{x_2(0)}}\right)^{\rho} \right) ^{\frac{1}{\rho}}$$
+
+        <ul>
+          <li>$\alpha_1$ and $\alpha_2$ are the initial shares of $x_1$ and $x_2$</li>
+        </ul>
+
+      </section>
+
+      <!-- A MAXIMIZATION PROBLEM -->
+      <section>
+        <h2> A MAXIMIZATION PROBLEM </h2>
+
+        <p class="small-text"> $x_1$ and $x_2$ have constant prices $p_1$ and $p_2$ </p>
+        <p class="small-text">We maximize $y$ under a yearly investment constraint in $x_1$ and $x_2$</p>
+        <div style="position:relative" >
+          <p class="fragment fade-out" style="position:absolute; margin-left: auto; margin-right: auto; left: 0; right: 0;" data-fragment-index="0">
+            $$\begin{align}
+            \max ~&\int_0^{T_f} y(t) dt\\
+            s.t ~ & \frac{y(t)}{y(0)} = \left(\alpha_1 \left({\frac{x_1(t)}{x_1(0)}}\right)^{\rho} + \alpha_2
+            \left({\frac{x_2(t)}{x_2(0)}}\right)^{\rho} \right) ^{\frac{1}{\rho}}\\
+            & \dot{x}_1(t) + \dot{x}_2(t) = I\\
+            & x_1,~x_2 \geq 0
+            \end{align}$$
+          </p>
+          <p class="fragment fade-in" style="position:absolute; margin-left: auto; margin-right: auto; left: 0; right: 0;" data-fragment-index="0">
+            $$\begin{align}
+            \max ~& y(0) \int_0^{T_f} \left(\alpha_1 \left({\frac{x_1(t)}{x_1(0)}}\right)^{\rho} + \alpha_2
+            \left({\frac{x_2(t)}{x_2(0)}}\right)^{\rho} \right) ^{\frac{1}{\rho}} dt\\
+            s.t ~ & p_1 \dot{x}_1(t) + p_2 \dot{x}_2(t) \leq I\\
+            & x_1,~x_2 \geq 0
+            \end{align}$$
+          </p>
+      </div>
+
+      </section>
+
+      <!-- Adding a dynamics -->
+      <section>
+        <h2>Adding a dynamics</h2>
+
+        <div class="container">
+          <div class="slider-container">
+            <div class="input-element slider">
+              <label for="x10-slider"> $x_1(0)$: </label>
+              <span id="x10-value">1</span>
+              <input type="range" id="x10-slider" name="x10-slider" min="0" max="5" value="1" step="0.1">
+            </div>
+            <div class="input-element slider">
+              <label for="x20-slider"> $x_2(0)$: </label>
+              <span id="x20-value">1</span>
+              <input type="range" id="x20-slider" name="x20-slider" min="0" max="5" value="1" step="0.1">
+            </div>
+            <div class="input-element slider">
+              <label for="p1-slider"> $p_1$: </label>
+              <span id="p1-value" class="">1</span>
+              <input type="range" id="p1-slider" name="p1-slider" min="0" max="5" value="1" step="0.1">
+            </div>
+            <div class="input-element slider">
+              <label for="p2-slider"> $p_2$: </label>
+              <span id="p2-value">1</span>
+              <input type="range" id="p2-slider" name="p2-slider" min="0" max="5" value="1" step="0.1">
+            </div>
+            <div class="input-element slider">
+              <label for="rho-slider-2"> $\rho$: </label>
+              <span id="rho-value-2">-2</span>
+              <input type="range" id="rho-slider-2" name="rho-slider" min="-10" max="10" value="-2" step="0.1">
+            </div>
+            <div class="input-element">
+            <label for="calib-selector" class="selector-name">Calibrate alphas on</label>
+            <select name="calib-selector" id="calib-selector">
+              <option value="quantities">physical quantities</option>
+              <option value="investments">monetary values</option>
+            </select>
+            </div>
+            <br>
+            <div class="button-container">
+              <button id="start-button" class="start-button">Start</button>
+            </div>
+
           </div>
-        </section>
 
-        <section>
-          <h2> WHAT DO WE CONSERVE ?</h2>
+          <div class="plot-container">
+            <div id="cesdyn-div">{{ url_ces_graph_dynamics | safe }}</div>
+          </div>
+        </div>
+      </section>
 
-          <br>
-          <div class="container">
-            <div class="col">
-              <h4>MONEY</h4>  
-              $$\hat{y} = (\alpha_1 {\hat{x_1}}^{\rho} + \alpha_2 {\hat{x_2}}^{\rho}) ^{\frac{1}{\rho}}$$
-              $$y = x_1 + x_2$$
+      <!-- What do we conserve -->
+      <section>
+        <h2> WHAT DO WE CONSERVE ?</h2>
+
+        <br>
+        <div class="container">
+          <div class="col">
+            <h4>MONEY</h4>
+            $$\hat{y} = (\alpha_1 {\hat{x_1}}^{\rho} + \alpha_2 {\hat{x_2}}^{\rho}) ^{\frac{1}{\rho}}$$
+            $$y = x_1 + x_2$$
           </div>
 
           <div class="col">
@@ -76,128 +176,116 @@
             $$\hat{y} = \hat{x}_1 + \hat{x}_2$$
             $$y = (\alpha_1 {x_1}^{\rho} + \alpha_2 {x_2}^{\rho}) ^{\frac{1}{\rho}}$$
           </div>
-          </div>
-        </section>
+        </div>
+      </section>
 
-        <section>
-          <h2>Adding a dynamics</h2>
 
-          <div class="container">
-            <div class="slider-container">
-              <div class="button-container">
-                <button id="start-button">Start</button>
-              </div>
-
-              <div class="slider">
-                  <label for="alpha-slider-2"> $\alpha_1$: </label>
-                  <span id="alpha-value-2">1</span>
-                  <input type="range" id="alpha-slider-2" name="alpha-slider" min="0" max="1" value="0.5" step="0.01">
-                  
-              </div>
-              <div class="slider">
-                  <label for="rho-slider-2"> $\rho$: </label> 
-                  <span id="rho-value-2">10</span>
-                  <input type="range" id="rho-slider-2" name="rho-slider" min="-10" max="10" value="2" step="0.1">
-              </div>
-
-          </div>
-
-          <div class="plot-container">
-            <div id="cesdyn-div">{{ url_ces_graph_dynamics | safe }}</div>
-          </div>
-          </div>
-        </section>
-        
-      </div>
     </div>
-    <script src="{{ url_for('static', filename='node_modules/reveal.js/dist/reveal.js') }}"></script>
-    <script src="{{ url_for('static', filename='node_modules/reveal.js/plugin/math/math.js') }}"></script> 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        Reveal.initialize({
-        katex: {
-            version: 'latest',
-            delimiters: [
-            {left: '$$', right: '$$', display: true},
-            {left: '$', right: '$', display: false},
-            {left: '\\(', right: '\\)', display: false},
-            {left: '\\[', right: '\\]', display: true}
+  </div>
+  <script src="{{ url_for('static', filename='node_modules/reveal.js/dist/reveal.js') }}"></script>
+  <script src="{{ url_for('static', filename='node_modules/reveal.js/plugin/math/math.js') }}"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    Reveal.initialize({
+      katex: {
+        version: 'latest',
+        delimiters: [
+          { left: '$$', right: '$$', display: true },
+          { left: '$', right: '$', display: false },
+          { left: '\\(', right: '\\)', display: false },
+          { left: '\\[', right: '\\]', display: true }
         ],
         ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      },
+      plugins: [RevealMath.KaTeX]
+    });
+
+    // CES plot
+
+    function updateCesGraph(alpha, rho) {
+      $.ajax({
+        type: 'POST',
+        url: '/update-plot-ces',
+        data: {
+          'alpha': alpha,
+          'rho': rho
         },
-        plugins: [ RevealMath.KaTeX ]
-        });
-
-      // dynamic plot
-
-        function updateCesGraph(alpha, rho) {
-            $.ajax({
-                type: 'POST',
-                url: '/update-plot-ces',
-                data: {
-                    'alpha': alpha,
-                    'rho': rho
-                },
-                success: function(response) {
-                    $('#cesdyn-div').html(response.url_ces_graph);
-                }
-            });
+        success: function (response) {
+          $('#cesdyn-div').html(response.url_ces_graph);
         }
+      });
+    }
 
-        // Update Plotly graph based on slider values
-        document.getElementById('alpha-slider').addEventListener('input', function() {
-            var xValue = this.value;
-            document.getElementById('alpha-value').innerText = xValue;
-            updateCesGraph(xValue, document.getElementById('rho-slider').value);
-        });
-        
-        document.getElementById('rho-slider').addEventListener('input', function() {
-            var yValue = this.value;
-            document.getElementById('rho-value').innerText = yValue;
-            updateCesGraph(document.getElementById('alpha-slider').value, yValue);
-        });
+    document.getElementById('alpha-slider').addEventListener('input', function () {
+      var xValue = this.value;
+      document.getElementById('alpha-value').innerText = xValue;
+      updateCesGraph(xValue, document.getElementById('rho-slider').value);
+    });
 
+    document.getElementById('rho-slider').addEventListener('input', function () {
+      var yValue = this.value;
+      document.getElementById('rho-value').innerText = yValue;
+      updateCesGraph(document.getElementById('alpha-slider').value, yValue);
+    });
 
-
-      // dynamic plot
-
-      function updateCesDynGraph(alpha, rho) {
-            $.ajax({
-                type: 'POST',
-                url: '/update-plot-cesdyn',
-                data: {
-                    'alpha': alpha,
-                    'rho': rho
-                },
-                success: function(response) {
-                    $('#cesdyn-div').html(response.url_ces_graph_dynamics);
-                }
-            });
+    // dynamic plot
+    function updateCesDynGraph(x10, x20, p1, p2, rho, calib_mode) {
+      $.ajax({
+        type: 'POST',
+        url: '/update-plot-cesdyn',
+        data: {
+          'x10': x10,
+          'x20': x20,
+          'p1': p1,
+          'p2': p2,
+          'rho': rho,
+          'calib_mode': calib_mode
+        },
+        success: function (response) {
+          $('#cesdyn-div').html(response.url_ces_graph_dynamics);
         }
+      });
+    }
 
-        document.getElementById('start-button').addEventListener('click', function() {
-            // Enable sliders
-            document.getElementById('alpha-slider-2').disabled = false;
-            document.getElementById('rho-slider-2').disabled = false;
+    document.getElementById('start-button').addEventListener('click', function () {
+      // Initial update with default values
 
-            // Initial update with default values
-            updateCesDynGraph(document.getElementById('alpha-slider-2').value, document.getElementById('alpha-slider-2').value);
-        });
+      
+      updateCesDynGraph(document.getElementById('x10-slider').value, 
+                        document.getElementById('x20-slider').value,
+                        document.getElementById('p1-slider').value,
+                        document.getElementById('p2-slider').value,
+                        document.getElementById('rho-slider-2').value,
+                        document.getElementById('calib-selector').value
+                        );
+    });
 
-        // Update Plotly graph based on slider values
-        document.getElementById('alpha-slider-2').addEventListener('input', function() {
-            var xValue = this.value;
-            document.getElementById('alpha-value-2').innerText = xValue;
-            updateCesDynGraph(xValue, document.getElementById('rho-slider-2').value);
-        });
-        
-        document.getElementById('rho-slider-2').addEventListener('input', function() {
-            var yValue = this.value;
-            document.getElementById('rho-value-2').innerText = yValue;
-            updateCesDynGraph(document.getElementById('alpha-slider-2').value, yValue);
-        });
+    document.getElementById('x10-slider').addEventListener('input', function () {
+      var xValue = this.value;
+      document.getElementById('x10-value').innerText = xValue;
+    });
 
+    document.getElementById('x20-slider').addEventListener('input', function () {
+      var xValue = this.value;
+      document.getElementById('x20-value').innerText = xValue;
+    });
 
-    </script>
-  </body>
+    document.getElementById('p1-slider').addEventListener('input', function () {
+      var xValue = this.value;
+      document.getElementById('p1-value').innerText = xValue;
+    });
+
+    document.getElementById('p2-slider').addEventListener('input', function () {
+      var xValue = this.value;
+      document.getElementById('p2-value').innerText = xValue;
+    });
+
+    document.getElementById('rho-slider-2').addEventListener('input', function () {
+      var yValue = this.value;
+      document.getElementById('rho-value-2').innerText = yValue;
+    });
+
+  </script>
+</body>
+
 </html>

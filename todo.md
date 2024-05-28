@@ -1,5 +1,10 @@
-- [ ] render latex fro alpha, write somewhere the equation
-- [ ] code control problem + solve it
-- [ ] test env ?
-- [ ] draw evolution of y, dy/di1 and dy/di2
+- [x] render latex fro alpha, write somewhere the equation
+- [x] code control problem + solve it
+- [x] correct ces to normalise y, x1, and x2 by initial values
+- [x] code 2 ces, one in which alpha is defined on money, the other when it is in quantity
+- [ ] graph on evolution of quantities and monetary values
+- [ ] Detail text in slides
+- [ ] A bit of CSS ?
+- [ ] optimize requests
+- [ ] icon app
 - [ ] documentation

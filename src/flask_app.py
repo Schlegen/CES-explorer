@@ -34,33 +34,36 @@ def update_plot_ces():
 
 @app.route('/update-plot-cesdyn', methods=['POST'])
 def update_plot_cesdyn():
-    alpha1 = float(request.form['alpha'])
+    x10 = float(request.form['x10'])
+    x20 = float(request.form['x20'])
+    p1 = float(request.form['p1'])
+    p2 = float(request.form['p2'])
     rho = float(request.form['rho'])
+    calib_mode = request.form['calib_mode']
 
     # Create an updated Plotly graph
-    cesdyn_graph_url = build_cesdyn_graph(alpha1, rho)
+    cesdyn_graph_url = build_cesdyn_graph(x10, x20, p1, p2, rho, calib_mode)
 
     # Convert the Plotly graph to HTML
     return jsonify({'url_ces_graph_dynamics': cesdyn_graph_url})
 
-
 def build_ces_graph(alpha1, rho):
     alpha2 = 1-alpha1
-    ces_function = CES(alpha1, alpha2, rho)
+    ces_function = CES.from_alphas(alpha1, alpha2, rho)
     ces_figure = figs.serve_CES_plot_3d(0, 0, 10, 10, ces_function)
     return ces_figure
 
-def build_cesdyn_graph(alpha1, rho):
-    pb = ControlProblem(rho=rho, 
-                        q0=np.array([1.,1.]),
-                        p=np.array([1.,1.]), 
-                        I=1., Tf=10)
+def build_cesdyn_graph(x10, x20, p1, p2, rho, calib_mode):
 
+    pb = ControlProblem(rho=rho, 
+                        q0=np.array([x10, x20]),
+                        p=np.array([p1, p2]), 
+                        calib_mode=calib_mode,
+                        I=1., Tf=10)
     pb.solve()
 
     ces_figure = figs.serve_CES_plot_3d(0, 0, 10, 10, pb.ces, pb)
     return ces_figure
 
 if __name__ == '__main__':
-
     app.run(debug=True)

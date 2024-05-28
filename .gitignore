@@ -1,6 +1,5 @@
 src/venv/*
-
-
 *.pyc
 **/node_modules
 **/__pycache__
+*-checkpoint.ipynb

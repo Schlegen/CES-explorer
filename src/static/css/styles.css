@@ -5,6 +5,11 @@
     padding: 50px;
 }
 
+.katex { font-size: 0.9em !important; }
+
+
+.small-text { font-size: 0.8em !important; }
+
 /* Plots sliders */
 
 .container {
@@ -14,30 +19,60 @@
     justify-content: space-between;
 }
 
-/* .col{
-    flex: 1;
-} */
-
-.twocolumn {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 10px;
-    text-align: left;
- }
-
 .slider-container {
     width: 20%;
+    /* padding-right: 10px; */
 }
+
+.input-element {
+    font-size: 0.6em !important;
+    line-height: 1;
+}
+
+.input-element .katex { 
+    font-size: 1em !important; 
+}
+
+.input-element .selector-name { 
+    font-size: 0.8em !important; 
+}
+
 .plot-container {
     width: 75%;
 }
 
-/* #plotly-div {
-    max-width: 60%;
-} */
 
-
-.slider {
-    margin: 10px 0;
-}
-
+/* CSS */
+.start-button {
+    background-color: rgba(66, 175, 250, 0.75);
+    border: 1px solid rgba(66, 175, 250, 0.75);
+    border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, .1) 0 2px 4px 0;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    /* font-family: "Akzidenz Grotesk BQ Medium", -apple-system, BlinkMacSystemFont, sans-serif; */
+    font-size: 16px;
+    font-weight: 400;
+    outline: none;
+    outline: 0;
+    padding: 5px 25px;
+    /* padding-top: 5px; */
+    text-align: center;
+    transform: translateY(0);
+    transition: transform 150ms, box-shadow 150ms;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+  }
+  
+  .button-37:hover {
+    box-shadow: rgba(0, 0, 0, .15) 0 3px 9px 0;
+    transform: translateY(-2px);
+  }
+  
+  @media (min-width: 768px) {
+    .button-37 {
+      padding: 10px 30px;
+    }
+  }
