@@ -111,6 +111,7 @@ class ControlProblem:
         self.x0 = np.array([q0[0],
                           q0[1],
                           1])
+        self.p = p
 
         self.params = {
             'p1': p[0],
@@ -141,7 +142,7 @@ class ControlProblem:
     
         self.cost = obc.quadratic_cost(self.dynamic, Q=np.diag([0,0,-1]), R=np.diag([0,0])) # 0 0 1 0 0
         
-        self.timepts = np.linspace(0, Tf, 21, endpoint=True)
+        self.timepts = np.linspace(0, Tf, 11, endpoint=True)
            
     def solve(self):
         self.result = obc.solve_ocp(

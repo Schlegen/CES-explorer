@@ -5,7 +5,8 @@
 <head>
   <meta charset="utf-8">
   <title>CES explorer</title>
-  <link rel="shortcut icon" href="#">
+  <!-- <link rel="shortcut icon" href="#"> -->
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/reveal.js/dist/reveal.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/reveal.js/dist/theme/black.css') }}"
     id="theme">
@@ -110,73 +111,60 @@
 
       <!-- Adding a dynamics -->
       <section>
-        <h2>Adding a dynamics</h2>
-
-        <div class="container">
-          <div class="slider-container">
-            <div class="input-element slider">
-              <label for="x10-slider"> $x_1(0)$: </label>
-              <span id="x10-value">1</span>
-              <input type="range" id="x10-slider" name="x10-slider" min="0" max="5" value="1" step="0.1">
+        <section>
+          <h2>Adding a dynamics</h2>
+  
+          <div class="container">
+            <div class="slider-container">
+              <div class="input-element slider">
+                <label for="x10-slider"> $x_1(0)$: </label>
+                <span id="x10-value">1</span>
+                <input type="range" id="x10-slider" name="x10-slider" min="0" max="5" value="1" step="0.1">
+              </div>
+              <div class="input-element slider">
+                <label for="x20-slider"> $x_2(0)$: </label>
+                <span id="x20-value">1</span>
+                <input type="range" id="x20-slider" name="x20-slider" min="0" max="5" value="1" step="0.1">
+              </div>
+              <div class="input-element slider">
+                <label for="p1-slider"> $p_1$: </label>
+                <span id="p1-value" class="">1</span>
+                <input type="range" id="p1-slider" name="p1-slider" min="0" max="5" value="1" step="0.1">
+              </div>
+              <div class="input-element slider">
+                <label for="p2-slider"> $p_2$: </label>
+                <span id="p2-value">1</span>
+                <input type="range" id="p2-slider" name="p2-slider" min="0" max="5" value="1" step="0.1">
+              </div>
+              <div class="input-element slider">
+                <label for="rho-slider-2"> $\rho$: </label>
+                <span id="rho-value-2">-2</span>
+                <input type="range" id="rho-slider-2" name="rho-slider" min="-10" max="10" value="-2" step="0.1">
+              </div>
+              <div class="input-element">
+              <label for="calib-selector" class="selector-name">Calibrate alphas on</label>
+              <select name="calib-selector" id="calib-selector">
+                <option value="quantities">physical quantities</option>
+                <option value="investments">monetary values</option>
+              </select>
+              </div>
+              <br>
+              <div class="button-container">
+                <button id="start-button" class="start-button">Start</button>
+              </div>
+  
             </div>
-            <div class="input-element slider">
-              <label for="x20-slider"> $x_2(0)$: </label>
-              <span id="x20-value">1</span>
-              <input type="range" id="x20-slider" name="x20-slider" min="0" max="5" value="1" step="0.1">
+  
+            <div class="plot-container">
+              <div id="cesdyn-div">{{ url_ces_graph_dynamics | safe }}</div>
             </div>
-            <div class="input-element slider">
-              <label for="p1-slider"> $p_1$: </label>
-              <span id="p1-value" class="">1</span>
-              <input type="range" id="p1-slider" name="p1-slider" min="0" max="5" value="1" step="0.1">
-            </div>
-            <div class="input-element slider">
-              <label for="p2-slider"> $p_2$: </label>
-              <span id="p2-value">1</span>
-              <input type="range" id="p2-slider" name="p2-slider" min="0" max="5" value="1" step="0.1">
-            </div>
-            <div class="input-element slider">
-              <label for="rho-slider-2"> $\rho$: </label>
-              <span id="rho-value-2">-2</span>
-              <input type="range" id="rho-slider-2" name="rho-slider" min="-10" max="10" value="-2" step="0.1">
-            </div>
-            <div class="input-element">
-            <label for="calib-selector" class="selector-name">Calibrate alphas on</label>
-            <select name="calib-selector" id="calib-selector">
-              <option value="quantities">physical quantities</option>
-              <option value="investments">monetary values</option>
-            </select>
-            </div>
-            <br>
-            <div class="button-container">
-              <button id="start-button" class="start-button">Start</button>
-            </div>
-
           </div>
+        </section>
 
-          <div class="plot-container">
-            <div id="cesdyn-div">{{ url_ces_graph_dynamics | safe }}</div>
-          </div>
-        </div>
-      </section>
-
-      <!-- What do we conserve -->
-      <section>
-        <h2> WHAT DO WE CONSERVE ?</h2>
-
-        <br>
-        <div class="container">
-          <div class="col">
-            <h4>MONEY</h4>
-            $$\hat{y} = (\alpha_1 {\hat{x_1}}^{\rho} + \alpha_2 {\hat{x_2}}^{\rho}) ^{\frac{1}{\rho}}$$
-            $$y = x_1 + x_2$$
-          </div>
-
-          <div class="col">
-            <h4>QUANTITIES</h4>
-            $$\hat{y} = \hat{x}_1 + \hat{x}_2$$
-            $$y = (\alpha_1 {x_1}^{\rho} + \alpha_2 {x_2}^{\rho}) ^{\frac{1}{\rho}}$$
-          </div>
-        </div>
+        <section>
+          <h2>Evolution of assets</h2>
+          <div id="quantitiesdyn-div">{{ url_quantities_graph_dynamics | safe }}</div>
+        </section>
       </section>
 
 
@@ -243,21 +231,47 @@
         },
         success: function (response) {
           $('#cesdyn-div').html(response.url_ces_graph_dynamics);
+          $('#quantitiesdyn-div').html(response.url_quantities_graph_dynamics)
+          
         }
       });
     }
+
+    // function updateQuantitiesDynGraph(x10, x20, p1, p2, rho, calib_mode) {
+    //   $.ajax({
+    //     type: 'POST',
+    //     url: '/update-plot-cesdyn',
+    //     data: {
+    //       'x10': x10,
+    //       'x20': x20,
+    //       'p1': p1,
+    //       'p2': p2,
+    //       'rho': rho,
+    //       'calib_mode': calib_mode
+    //     },
+    //     success: function (response) {
+    //       $('#cesdyn-div').html(response.url_quantites_graph_dynamics);
+    //     }
+    //   });
+    // }
 
     document.getElementById('start-button').addEventListener('click', function () {
       // Initial update with default values
 
       
       updateCesDynGraph(document.getElementById('x10-slider').value, 
-                        document.getElementById('x20-slider').value,
-                        document.getElementById('p1-slider').value,
-                        document.getElementById('p2-slider').value,
-                        document.getElementById('rho-slider-2').value,
-                        document.getElementById('calib-selector').value
-                        );
+            document.getElementById('x20-slider').value,
+            document.getElementById('p1-slider').value,
+            document.getElementById('p2-slider').value,
+            document.getElementById('rho-slider-2').value,
+            document.getElementById('calib-selector').value);
+
+      // updateQuantitiesDynGraph(document.getElementById('x10-slider').value, 
+      //       document.getElementById('x20-slider').value,
+      //       document.getElementById('p1-slider').value,
+      //       document.getElementById('p2-slider').value,
+      //       document.getElementById('rho-slider-2').value,
+      //       document.getElementById('calib-selector').value);
     });
 
     document.getElementById('x10-slider').addEventListener('input', function () {

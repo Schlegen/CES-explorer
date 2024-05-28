@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, url_for
 import jinja2# import Environment, FileSystemLoader
 import numpy as np
 
@@ -8,7 +8,6 @@ import utils.figures as figs
 from config import *
 
 app = Flask(__name__)
-
 
 @app.route('/')
 def home():
@@ -42,15 +41,16 @@ def update_plot_cesdyn():
     calib_mode = request.form['calib_mode']
 
     # Create an updated Plotly graph
-    cesdyn_graph_url = build_cesdyn_graph(x10, x20, p1, p2, rho, calib_mode)
+    cesdyn_graph_url, quantities_graph = build_cesdyn_graph(x10, x20, p1, p2, rho, calib_mode)
 
     # Convert the Plotly graph to HTML
-    return jsonify({'url_ces_graph_dynamics': cesdyn_graph_url})
+    return jsonify({'url_ces_graph_dynamics': cesdyn_graph_url,
+                    'url_quantities_graph_dynamics' : quantities_graph})
 
 def build_ces_graph(alpha1, rho):
     alpha2 = 1-alpha1
     ces_function = CES.from_alphas(alpha1, alpha2, rho)
-    ces_figure = figs.serve_CES_plot_3d(0, 0, 10, 10, ces_function)
+    ces_figure = figs.serve_CES_plot_3d(ces_function)
     return ces_figure
 
 def build_cesdyn_graph(x10, x20, p1, p2, rho, calib_mode):
@@ -62,8 +62,13 @@ def build_cesdyn_graph(x10, x20, p1, p2, rho, calib_mode):
                         I=1., Tf=10)
     pb.solve()
 
-    ces_figure = figs.serve_CES_plot_3d(0, 0, 10, 10, pb.ces, pb)
-    return ces_figure
+    ces_figure = figs.serve_CES_plot_3d(pb.ces, pb)
+
+    quantities_graph = figs.serve_CES_quantities_plot(pb)
+
+    return ces_figure, quantities_graph
 
 if __name__ == '__main__':
     app.run(debug=True)
+    # app.add_url_rule('/favicon.ico',
+    #              redirect_to=url_for('static', filename='images/favicon.ico'))

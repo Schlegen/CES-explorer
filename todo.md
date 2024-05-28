@@ -2,9 +2,15 @@
 - [x] code control problem + solve it
 - [x] correct ces to normalise y, x1, and x2 by initial values
 - [x] code 2 ces, one in which alpha is defined on money, the other when it is in quantity
-- [ ] graph on evolution of quantities and monetary values
+- [x] define plotting limit as a function of results
+- [x] graph on evolution of quantities and monetary values
 - [ ] Detail text in slides
 - [ ] A bit of CSS ?
 - [ ] optimize requests
-- [ ] icon app
+- [x] icon app
+- [ ] info window on calibration of alphas
 - [ ] documentation
+- [ ] 3d plot theme
+- [ ] mark starting point
+- [ ] Do not allow to relaunch a solve while the precedent is not finished
+- [ ] change problem so that we see the switch between
