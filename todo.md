@@ -5,18 +5,18 @@
 - [x] define plotting limit as a function of results
 - [x] graph on evolution of quantities and monetary values
 - [x] fix first graph
-- [ ] slide numbers
+- [x] slide numbers
 - [x] Detail text in slides
-- [ ] fix typos in problems
-- [ ] A bit of CSS ?
+- [x] fix typos in problems
+- [ ] A bit of CSS for the title page
 - [ ] optimize requests
 - [x] icon app
 - [ ] info window on calibration of alphas
 - [ ] documentation
-- [ ] 3d plot theme
-- [ ] mark starting point
+- [x] 3d plot theme
+- [x] mark starting point
 - [ ] Do not allow to relaunch a solve while the precedent is not finished
-- [ ] change problem so that we see the switch between x1 and x2
+- [ ] Define new problem so that we see the switch between x1 and x2
 - [ ] fix divide by zero encountered in power
 - [ ] readme
 - [ ] add 'please run the model above to see the results' in the last slide 

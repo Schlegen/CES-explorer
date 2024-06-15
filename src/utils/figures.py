@@ -61,7 +61,8 @@ def serve_CES_plot_3d(ces_function, control_problem=None):
                 y=y_grid,
                 z=z_grid,
                 colorscale=cscale,
-                opacity=0.8
+                opacity=0.8,
+                showlegend=False
             ),
             go.Scatter3d(
                 y=control_problem.x2,
@@ -71,7 +72,8 @@ def serve_CES_plot_3d(ces_function, control_problem=None):
                     color='darkblue',
                     width=8
                 ),
-                mode='lines'
+                mode='lines',
+                showlegend=False
             ),
             go.Scatter3d( # start point
                 y=[control_problem.x2[0]],
@@ -87,7 +89,8 @@ def serve_CES_plot_3d(ces_function, control_problem=None):
                 textfont=dict(
                     size=18,
                     color="darkgreen"
-                )
+                ),
+                showlegend=False
             ),
             go.Scatter3d( # end point
                 y=[control_problem.x2[-1]],
@@ -103,8 +106,9 @@ def serve_CES_plot_3d(ces_function, control_problem=None):
                 textfont=dict(
                     size=18,
                     color='darkred'
-                )
-            ),
+                ),
+                showlegend=False
+            )
             ],
             layout=layout
         )
