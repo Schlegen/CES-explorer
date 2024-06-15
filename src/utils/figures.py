@@ -34,8 +34,6 @@ def serve_CES_plot_3d(ces_function, control_problem=None):
     else :
         xmin, ymin, xmax, ymax = 0, 0, 10, 10
 
-
-
     # Create the plot
     x_grid = np.arange(xmin, xmax, 0.2)
     y_grid = np.arange(ymin, ymax, 0.2)
@@ -62,20 +60,52 @@ def serve_CES_plot_3d(ces_function, control_problem=None):
                 x=x_grid,
                 y=y_grid,
                 z=z_grid,
-                colorscale=cscale
+                colorscale=cscale,
+                opacity=0.8
             ),
             go.Scatter3d(
                 y=control_problem.x2,
                 x=control_problem.x1,
                 z=control_problem.y,
-                # mode='markers',
+                line=dict(
+                    color='darkblue',
+                    width=8
+                ),
+                mode='lines'
+            ),
+            go.Scatter3d( # start point
+                y=[control_problem.x2[0]],
+                x=[control_problem.x1[0]],
+                z=[control_problem.y[0]],
+                text=['start'],
+                mode='markers+text',
                 marker=dict(
-                    size=3,
-                    color=control_problem.t,                # set color to an array/list of desired values
-                    colorscale='Viridis',   # choose a colorscale
-                    opacity=0.8
+                    size=8,
+                    color='darkgreen',
+                    symbol='cross'
+                ),
+                textfont=dict(
+                    size=18,
+                    color="darkgreen"
                 )
-            )],
+            ),
+            go.Scatter3d( # end point
+                y=[control_problem.x2[-1]],
+                x=[control_problem.x1[-1]],
+                z=[control_problem.y[-1]],
+                text=['end'],
+                mode='markers+text',
+                marker=dict(
+                    size=8,
+                    color='darkred',
+                    symbol='cross'
+                ),
+                textfont=dict(
+                    size=18,
+                    color='darkred'
+                )
+            ),
+            ],
             layout=layout
         )
 
@@ -92,6 +122,7 @@ def serve_CES_plot_3d(ces_function, control_problem=None):
             ),
             layout=layout
         )
+
     fig.update_layout(
         scene = {
             "xaxis": {"nticks": 20, "title":"x1"},
