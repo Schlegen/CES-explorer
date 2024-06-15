@@ -24,11 +24,7 @@ def home():
 def update_plot_ces():
     alpha1 = float(request.form['alpha'])
     rho = float(request.form['rho'])
-
-    # Create an updated Plotly graph
     ces_graph_url = build_ces_graph(alpha1, rho)
-
-    # Convert the Plotly graph to HTML
     return jsonify({'url_ces_graph': ces_graph_url})
 
 @app.route('/update-plot-cesdyn', methods=['POST'])
@@ -39,11 +35,7 @@ def update_plot_cesdyn():
     p2 = float(request.form['p2'])
     rho = float(request.form['rho'])
     calib_mode = request.form['calib_mode']
-
-    # Create an updated Plotly graph
     cesdyn_graph_url, quantities_graph = build_cesdyn_graph(x10, x20, p1, p2, rho, calib_mode)
-
-    # Convert the Plotly graph to HTML
     return jsonify({'url_ces_graph_dynamics': cesdyn_graph_url,
                     'url_quantities_graph_dynamics' : quantities_graph})
 
@@ -70,5 +62,3 @@ def build_cesdyn_graph(x10, x20, p1, p2, rho, calib_mode):
 
 if __name__ == '__main__':
     app.run(debug=True)
-    # app.add_url_rule('/favicon.ico',
-    #              redirect_to=url_for('static', filename='images/favicon.ico'))
