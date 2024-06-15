@@ -102,6 +102,9 @@ class CES:
       # Todo: set initial conditions for x[2] 
       return np.array([x[0] + x1_0, x[1] + x2_0, x[2] + y_0])
 
+    def __repr__(self):
+      return f'({self.alpha1} (x1 / {self.x10})^{self.rho} + {self.alpha2} (x2 / {self.x20})^{self.rho})^(1/{self.rho})'
+
 class ControlProblem:
     def __init__(self, rho=-2, q0=np.array([1.,1.]), p=np.array([1.,1.]), calib_mode='quantities', I=1., Tf=10):
         """
