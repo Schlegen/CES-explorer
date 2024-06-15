@@ -1,0 +1,39 @@
+# CES explorer
+
+## Presentation
+
+Web app presenting some insights about the constant elasticity of substitution function.
+
+```math
+y = (\alpha_1 {x_1}^{\rho} + \alpha_2 {x_2}^{\rho}) ^{\frac{1}{\rho}}
+```
+
+We first propose some plots of the function with intercative sliders.
+In a second part, we designed and solved a optimal control problem consisting in maximization a CES under a constraint on total investments.
+
+```math
+\begin{align}
+\max ~&\int_0^{T_f} y(t) dt\\
+    s.t ~ & \frac{y(t)}{y(0)} = \left(\alpha_1 \left({\frac{x_1(t)}{x_1(0)}}\right)^{\rho} + \alpha_2
+    \left({\frac{x_2(t)}{x_2(0)}}\right)^{\rho} \right) ^{\frac{1}{\rho}}\\
+    & p_1 \dot{x}_1(t) + p_2 \dot{x}_2(t) = I\\
+    & x_1,~x_2 \geq 0
+\end{align}
+```
+
+This app is codes in Python (Flask), HTML, CSS and javascript. I used the Javascript framework Reveal.jsm that allozs to design presentations zith zeb languages.
+
+## Content preview
+
+|![alt text](slides/slide-1.png){: style="width:30%"}|![alt text](slides/slide-2.png){: style="width:30%"}|![alt text](slides/slide-3.png){: style="width:30%"}|
+|![alt text](slides/slide-5.png){: style="width:30%"}|![alt text](slides/slide-6.png){: style="width:30%"}|![alt text](slides/slide-6b.png){: style="width:30%"}|
+
+## Running the app
+
+pip install the reauireements.txt then type the follozing line on your terminal
+
+```{bash}
+cd src
+python flask_app.py
+```
+

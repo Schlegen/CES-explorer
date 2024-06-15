@@ -8,15 +8,14 @@
 - [x] slide numbers
 - [x] Detail text in slides
 - [x] fix typos in problems
-- [ ] A bit of CSS for the title page
-- [ ] optimize requests
+- [x] A bit of CSS for the title page
 - [x] icon app
-- [ ] info window on calibration of alphas
-- [ ] documentation
 - [x] 3d plot theme
 - [x] mark starting point
+- [x] fix divide by zero encountered in power
+- [x] readme
+- [ ] add 'please run the model above to see the results' in the last slide
 - [ ] Do not allow to relaunch a solve while the precedent is not finished
 - [ ] Define new problem so that we see the switch between x1 and x2
-- [x] fix divide by zero encountered in power
-- [ ] readme
-- [ ] add 'please run the model above to see the results' in the last slide 
+- [ ] info window on calibration of alphas
+- [ ] optimize requests

@@ -46,7 +46,7 @@ def serve_CES_plot_3d(ces_function, control_problem=None):
         plot_bgcolor="#282b38",
         paper_bgcolor="#282b38",
         font={"color": "#a5b1cd"},
-        width=600,
+        width=700,
     )
 
     if control_problem:
@@ -184,7 +184,7 @@ def serve_CES_quantities_plot(control_problem):
 
     fig.update_layout(
         hovermode="closest",
-        width=800,
+        width=960,
         # legend=dict(x=0, y=-0.01, orientation="h"),
         margin=dict(l=0, r=0, t=0, b=0),
         paper_bgcolor="#282b38",

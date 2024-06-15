@@ -20,7 +20,8 @@
       <section>
         <h2 class="title"> CES explorer </h2>
         <p class="subtitle">Explore the Constant Elasticity of Substitution function</p>
-        <p class="name">Created by Nicolas Schlegel (<a href="https://github.com/schlegen">@schlegen</a>) in April 2024  </p>
+        <p class="name">Created by Nicolas Schlegel (<a href="https://github.com/schlegen">@schlegen</a>) in April 2024
+        </p>
       </section>
 
       <!-- GENERAL DEFINITION -->
@@ -68,7 +69,7 @@
       </section>
 
       <!-- CES WITH DYNAMICS -->
-      <section> 
+      <section>
         <h2> CES WITH DYNAMICS </h2>
 
         <!-- <p class="fragment fade-out"> $y$ is a CES of $~ x_1$ and $x_2$ if: </p> -->
@@ -89,8 +90,10 @@
 
         <p class="small-text"> $x_1$ and $x_2$ have constant prices $p_1$ and $p_2$ </p>
         <p class="small-text">We maximize $y$ under a yearly investment constraint in $x_1$ and $x_2$</p>
-        <div style="position:relative" >
-          <p class="fragment fade-out" style="position:absolute; margin-left: auto; margin-right: auto; left: 0; right: 0;" data-fragment-index="0">
+        <div style="position:relative">
+          <p class="fragment fade-out"
+            style="position:absolute; margin-left: auto; margin-right: auto; left: 0; right: 0;"
+            data-fragment-index="0">
             $$\begin{align}
             \max ~&\int_0^{T_f} y(t) dt\\
             s.t ~ & \frac{y(t)}{y(0)} = \left(\alpha_1 \left({\frac{x_1(t)}{x_1(0)}}\right)^{\rho} + \alpha_2
@@ -99,7 +102,9 @@
             & x_1,~x_2 \geq 0
             \end{align}$$
           </p>
-          <p class="fragment fade-in" style="position:absolute; margin-left: auto; margin-right: auto; left: 0; right: 0;" data-fragment-index="0">
+          <p class="fragment fade-in"
+            style="position:absolute; margin-left: auto; margin-right: auto; left: 0; right: 0;"
+            data-fragment-index="0">
             $$\begin{align}
             \max ~& y(0) \int_0^{T_f} \left(\alpha_1 \left({\frac{x_1(t)}{x_1(0)}}\right)^{\rho} + \alpha_2
             \left({\frac{x_2(t)}{x_2(0)}}\right)^{\rho} \right) ^{\frac{1}{\rho}} dt\\
@@ -107,7 +112,7 @@
             & x_1,~x_2 \geq 0
             \end{align}$$
           </p>
-      </div>
+        </div>
 
       </section>
 
@@ -115,7 +120,7 @@
       <section>
         <section>
           <h2>Adding a dynamics</h2>
-  
+
           <div class="container">
             <div class="slider-container">
               <div class="input-element slider">
@@ -144,26 +149,26 @@
                 <input type="range" id="rho-slider-2" name="rho-slider" min="-10" max="10" value="-2" step="0.1">
               </div>
               <div class="input-element">
-              <label for="calib-selector" class="selector-name">Calibrate alphas on</label>
-              <select name="calib-selector" id="calib-selector">
-                <option value="quantities">physical quantities</option>
-                <option value="investments">monetary values</option>
-              </select>
+                <label for="calib-selector" class="selector-name">Calibrate alphas on</label>
+                <select name="calib-selector" id="calib-selector">
+                  <option value="quantities">physical quantities</option>
+                  <option value="investments">monetary values</option>
+                </select>
               </div>
               <br>
               <div class="button-container">
                 <button id="start-button" class="start-button">Start</button>
               </div>
-  
+
             </div>
-  
+
             <div class="plot-container">
               <div id="cesdyn-div">{{ url_ces_graph_dynamics | safe }}</div>
             </div>
           </div>
         </section>
 
-        <section>
+        <section>        
           <h2>Evolution of assets</h2>
           <div id="quantitiesdyn-div">{{ url_quantities_graph_dynamics | safe }}</div>
         </section>
@@ -239,41 +244,17 @@
       });
     }
 
-    // function updateQuantitiesDynGraph(x10, x20, p1, p2, rho, calib_mode) {
-    //   $.ajax({
-    //     type: 'POST',
-    //     url: '/update-plot-cesdyn',
-    //     data: {
-    //       'x10': x10,
-    //       'x20': x20,
-    //       'p1': p1,
-    //       'p2': p2,
-    //       'rho': rho,
-    //       'calib_mode': calib_mode
-    //     },
-    //     success: function (response) {
-    //       $('#cesdyn-div').html(response.url_quantites_graph_dynamics);
-    //     }
-    //   });
-    // }
 
     document.getElementById('start-button').addEventListener('click', function () {
       // Initial update with default values
 
-      
-      updateCesDynGraph(document.getElementById('x10-slider').value, 
-            document.getElementById('x20-slider').value,
-            document.getElementById('p1-slider').value,
-            document.getElementById('p2-slider').value,
-            document.getElementById('rho-slider-2').value,
-            document.getElementById('calib-selector').value);
+      updateCesDynGraph(document.getElementById('x10-slider').value,
+        document.getElementById('x20-slider').value,
+        document.getElementById('p1-slider').value,
+        document.getElementById('p2-slider').value,
+        document.getElementById('rho-slider-2').value,
+        document.getElementById('calib-selector').value);
 
-      // updateQuantitiesDynGraph(document.getElementById('x10-slider').value, 
-      //       document.getElementById('x20-slider').value,
-      //       document.getElementById('p1-slider').value,
-      //       document.getElementById('p2-slider').value,
-      //       document.getElementById('rho-slider-2').value,
-      //       document.getElementById('calib-selector').value);
     });
 
     document.getElementById('x10-slider').addEventListener('input', function () {

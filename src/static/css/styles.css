@@ -2,7 +2,7 @@
 .reveal section {
     font-size: 1em;
     text-align: center;
-    padding: 50px;
+    /* padding: 50px; */
 }
 
 .katex { font-size: 0.9em !important; }
@@ -21,7 +21,7 @@
 
 .slider-container {
     width: 20%;
-    /* padding-right: 10px; */
+    padding-right: 10px;
 }
 
 .input-element {
@@ -41,6 +41,9 @@
     width: 75%;
 }
 
+#quantitiesdyn-div {
+   width:75%; 
+}
 /* .title {
     font-size: 1.1em !important; 
 } */
@@ -53,7 +56,6 @@
     color : #bbbbbb;
 }
 
-/* CSS */
 .start-button {
     background-color: rgba(66, 175, 250, 0.75);
     border: 1px solid rgba(66, 175, 250, 0.75);
@@ -77,12 +79,12 @@
     touch-action: manipulation;
   }
   
-  .button-37:hover {
+.button-37:hover {
     box-shadow: rgba(0, 0, 0, .15) 0 3px 9px 0;
     transform: translateY(-2px);
   }
   
-  @media (min-width: 768px) {
+@media (min-width: 768px) {
     .button-37 {
       padding: 10px 30px;
     }
