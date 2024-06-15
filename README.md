@@ -21,7 +21,7 @@ In a second part, we design and solve an optimal control problem consisting in m
 \end{align}
 ```
 
-This app is codes in Python (Flask), HTML, CSS and javascript. I used the Javascript framework Reveal.jsm that allows to design presentations with web languages.
+This app is codes in Python (Flask), HTML, CSS and javascript. I used the Javascript framework Reveal.js that allows to build presentations with web languages.
 
 ## Content preview
 
@@ -30,7 +30,7 @@ This app is codes in Python (Flask), HTML, CSS and javascript. I used the Javasc
 
 ## Running the app
 
-pip install the reauireements.txt then type the follozing line on your terminal
+First, pip install the requirements.txt. Then type the follozing line on your terminal
 
 ```{bash}
 cd src
