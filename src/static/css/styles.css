@@ -41,6 +41,17 @@
     width: 75%;
 }
 
+/* .title {
+    font-size: 1.1em !important; 
+} */
+.subtitle {
+    font-size: 1em !important; 
+    color : #dddddd;
+}
+.name {
+    font-size: 0.6em !important;
+    color : #bbbbbb;
+}
 
 /* CSS */
 .start-button {

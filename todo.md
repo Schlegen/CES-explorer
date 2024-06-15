@@ -17,6 +17,6 @@
 - [x] mark starting point
 - [ ] Do not allow to relaunch a solve while the precedent is not finished
 - [ ] Define new problem so that we see the switch between x1 and x2
-- [ ] fix divide by zero encountered in power
+- [x] fix divide by zero encountered in power
 - [ ] readme
 - [ ] add 'please run the model above to see the results' in the last slide 
