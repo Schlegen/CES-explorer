@@ -25,8 +25,8 @@ This app is codes in Python (Flask), HTML, CSS and javascript. I used the Javasc
 
 ## Content preview
 
-|![alt text](slides/slide-1.png){: style="width:30%"}|![alt text](slides/slide-2.png){: style="width:30%"}|![alt text](slides/slide-3.png){: style="width:30%"}|
-|![alt text](slides/slide-5.png){: style="width:30%"}|![alt text](slides/slide-6.png){: style="width:30%"}|![alt text](slides/slide-6b.png){: style="width:30%"}|
+<img src="slides/slide-1.png" width="30%"> <img src="slides/slide-2.png" width="30%"> <img src="slides/slide-3.png" width="30%">
+<img src="slides/slide-5.png" width="30%"><img src="slides/slide-6.png" width="30%"><img src="slides/slide-6b.png" width="30%">
 
 ## Running the app
 
