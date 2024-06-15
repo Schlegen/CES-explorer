@@ -199,21 +199,21 @@
           'rho': rho
         },
         success: function (response) {
-          $('#cesdyn-div').html(response.url_ces_graph);
+          $('#ces-div').html(response.url_ces_graph);
         }
       });
     }
 
     document.getElementById('alpha-slider').addEventListener('input', function () {
-      var xValue = this.value;
-      document.getElementById('alpha-value').innerText = xValue;
-      updateCesGraph(xValue, document.getElementById('rho-slider').value);
+      var alphaValue = this.value;
+      document.getElementById('alpha-value').innerText = alphaValue;
+      updateCesGraph(alphaValue, document.getElementById('rho-slider').value);
     });
 
     document.getElementById('rho-slider').addEventListener('input', function () {
-      var yValue = this.value;
-      document.getElementById('rho-value').innerText = yValue;
-      updateCesGraph(document.getElementById('alpha-slider').value, yValue);
+      var rhoValue = this.value;
+      document.getElementById('rho-value').innerText = rhoValue;
+      updateCesGraph(document.getElementById('alpha-slider').value, rhoValue);
     });
 
     // dynamic plot
@@ -231,8 +231,7 @@
         },
         success: function (response) {
           $('#cesdyn-div').html(response.url_ces_graph_dynamics);
-          $('#quantitiesdyn-div').html(response.url_quantities_graph_dynamics)
-          
+          $('#quantitiesdyn-div').html(response.url_quantities_graph_dynamics);
         }
       });
     }

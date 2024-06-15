@@ -4,6 +4,8 @@
 - [x] code 2 ces, one in which alpha is defined on money, the other when it is in quantity
 - [x] define plotting limit as a function of results
 - [x] graph on evolution of quantities and monetary values
+- [x] fix first graph
+- [ ] slide numbers
 - [ ] Detail text in slides
 - [ ] A bit of CSS ?
 - [ ] optimize requests
@@ -13,4 +15,6 @@
 - [ ] 3d plot theme
 - [ ] mark starting point
 - [ ] Do not allow to relaunch a solve while the precedent is not finished
-- [ ] change problem so that we see the switch between
+- [ ] change problem so that we see the switch between x1 and x2
+- [ ] fix divide by zero encountered in power
+- [ ] readme
