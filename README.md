@@ -9,7 +9,7 @@ y = (\alpha_1 {x_1}^{\rho} + \alpha_2 {x_2}^{\rho}) ^{\frac{1}{\rho}}
 ```
 
 We first propose some plots of the function with intercative sliders.
-In a second part, we designed and solved a optimal control problem consisting in maximization a CES under a constraint on total investments.
+In a second part, we design and solve an optimal control problem consisting in maximizing a CES under a constraint on total investments.
 
 ```math
 \begin{align}
@@ -21,7 +21,7 @@ In a second part, we designed and solved a optimal control problem consisting in
 \end{align}
 ```
 
-This app is codes in Python (Flask), HTML, CSS and javascript. I used the Javascript framework Reveal.jsm that allozs to design presentations zith zeb languages.
+This app is codes in Python (Flask), HTML, CSS and javascript. I used the Javascript framework Reveal.jsm that allows to design presentations with web languages.
 
 ## Content preview
 
