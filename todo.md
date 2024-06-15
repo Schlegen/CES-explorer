@@ -6,7 +6,8 @@
 - [x] graph on evolution of quantities and monetary values
 - [x] fix first graph
 - [ ] slide numbers
-- [ ] Detail text in slides
+- [x] Detail text in slides
+- [ ] fix typos in problems
 - [ ] A bit of CSS ?
 - [ ] optimize requests
 - [x] icon app
@@ -18,3 +19,4 @@
 - [ ] change problem so that we see the switch between x1 and x2
 - [ ] fix divide by zero encountered in power
 - [ ] readme
+- [ ] add 'please run the model above to see the results' in the last slide 
