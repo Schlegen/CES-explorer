@@ -26,13 +26,13 @@ def serve_CES_plot_3d(ces_function, control_problem=None):
     ]
 
     if control_problem:
-        xmin = min(min(control_problem.x1), min(control_problem.x2)) - 1
+        xmin = min(min(control_problem.x1), min(control_problem.x2)) - 1 + 1e-3 
         ymin = xmin
-        xmax = max(max(control_problem.x1), max(control_problem.x2)) + 1
+        xmax = max(max(control_problem.x1), max(control_problem.x2)) + 1 
         ymax = xmax
 
     else :
-        xmin, ymin, xmax, ymax = 0, 0, 10, 10
+        xmin, ymin, xmax, ymax = 1e-3, 1e-3, 10, 10
 
     # Create the plot
     x_grid = np.arange(xmin, xmax, 0.2)
