@@ -30,7 +30,7 @@ This app is codes in Python (Flask), HTML, CSS and javascript. I used the Javasc
 
 ## Running the app
 
-First, pip install the requirements.txt. Then type the follozing line on your terminal
+First, pip install the requirements.txt. Then type the following line in your terminal
 
 ```{bash}
 cd src
